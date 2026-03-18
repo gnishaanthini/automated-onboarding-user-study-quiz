@@ -166,7 +166,6 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
 
   <div class="study-header">
     <h1>Automating User Onboarding<br>for Composite Visualizations</h1>
-    <p>User study instrument — all responses are confidential</p>
   </div>
 
   <div class="progress-nav" id="progress-nav">
@@ -189,10 +188,6 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
       <div class="field-group">
         <label class="field-label" for="login-id">Participant ID</label>
         <input type="text" id="login-id" placeholder="e.g. P01" autocomplete="off">
-      </div>
-      <div class="field-group">
-        <label class="field-label" for="login-name">Full name (optional)</label>
-        <input type="text" id="login-name" placeholder="Your name" autocomplete="off">
       </div>
       <div class="field-group">
         <label class="field-label">Assigned group</label>
@@ -230,7 +225,6 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
     <div class="card">
       <div class="section-badge badge-pre">Part 1 — Pre-Study</div>
       <div class="card-title">Section A: Demographics & Visualization Experience</div>
-      <div class="card-sub">This information helps us understand your background. All responses are anonymous.</div>
 
       <div class="field-group">
         <label class="field-label" for="age">Age</label>
@@ -288,7 +282,7 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
 
     <div class="card">
       <div class="section-badge badge-pre">Part 1 — Pre-Study</div>
-      <div class="card-title">Section B: Baseline Perception</div>
+      <div class="card-title">Section B: Baseline Perception of Composite Visualizations</div>
       <div class="card-sub">1 = Strongly Disagree &nbsp;·&nbsp; 7 = Strongly Agree</div>
       <div class="likert-block">
         <div class="likert-block-header">
@@ -317,7 +311,7 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
         </div>
         <div class="likert-ends-row"><span>Strongly disagree</span><span>Strongly agree</span></div>
       </div>
-      <button class="btn btn-primary btn-full" id="pre-next-btn">Continue to MatrixWave tasks →</button>
+      <button class="btn btn-primary btn-full" id="pre-next-btn">Continue to tasks →</button>
     </div>
   </div>
 
@@ -360,13 +354,13 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
     <button class="back-btn" id="mw-scales-back-btn">Back to tasks</button>
     <div class="card">
       <div class="section-badge badge-mw">Section C — Usability</div>
-      <div class="card-title">System Usability Questionnaire — MatrixWave</div>
+      <div class="card-title">Post-Study System Usability Questionnaire  — MatrixWave</div>
       <div class="card-sub">1 = Strongly Disagree &nbsp;·&nbsp; 7 = Strongly Agree</div>
       <div id="mw-sus-items"></div>
     </div>
     <div class="card">
       <div class="section-badge badge-mw">Section D — Workload</div>
-      <div class="card-title">NASA-TLX Workload — MatrixWave</div>
+      <div class="card-title"> Workload — MatrixWave</div>
       <div class="card-sub">1 = Very Low &nbsp;·&nbsp; 7 = Very High</div>
       <div id="mw-tlx-items"></div>
     </div>
@@ -418,13 +412,13 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
     <button class="back-btn" id="ps-scales-back-btn">Back to tasks</button>
     <div class="card">
       <div class="section-badge badge-ps">Section C — Usability</div>
-      <div class="card-title">System Usability Questionnaire — PrettiSmart</div>
+      <div class="card-title">Post-Study System Usability Questionnaire  — PrettiSmart</div>
       <div class="card-sub">1 = Strongly Disagree &nbsp;·&nbsp; 7 = Strongly Agree</div>
       <div id="ps-sus-items"></div>
     </div>
     <div class="card">
       <div class="section-badge badge-ps">Section D — Workload</div>
-      <div class="card-title">NASA-TLX Workload — PrettiSmart</div>
+      <div class="card-title">Workload — PrettiSmart</div>
       <div class="card-sub">1 = Very Low &nbsp;·&nbsp; 7 = Very High</div>
       <div id="ps-tlx-items"></div>
     </div>
@@ -446,32 +440,33 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
       <div class="card-sub">Please reflect on both conditions you experienced and share your thoughts below.</div>
 
       <div class="field-group">
-        <label class="field-label">1. Comparing the text description and the automated onboarding system, which approach was more effective in helping you understand the visualization and the relationships between its multiple views? Why?</label>
+        <label class="field-label">1. Comparing the text description and our automated onboarding system, which approach was more effective in helping you understand the visualization and the relationships between its multiple views? Why?</label>
         <textarea id="post-q1" style="min-height:110px" placeholder="Your answer…"></textarea>
       </div>
       <div class="divider"></div>
       <div class="field-group">
-        <label class="field-label">2. Which approach was more cognitively demanding? Please specify what factors made it more demanding.</label>
+        <label class="field-label">2. Comparing the text description and our automated onboarding system, Which approach was more cognitively demanding? Please specify what factors made it more demanding.
+</label>
         <textarea id="post-q2" style="min-height:110px" placeholder="Your answer…"></textarea>
       </div>
       <div class="divider"></div>
       <div id="post-eff-q3">
       <div class="field-group">
-        <label class="field-label">3. What specific feature or aspect of the automated onboarding system did you find most helpful, and why?</label>
+        <label class="field-label">3. What specific feature or aspect of our automated onboarding system did you find most helpful, and why?</label>
         <textarea id="post-q3" style="min-height:110px" placeholder="Your answer…"></textarea>
       </div>
       </div>
       <div class="divider"></div>
       <div id="post-eff-q4">
       <div class="field-group">
-        <label class="field-label">4. Were there any confusing aspects or areas for improvement within the automated onboarding system's interface or explanations? Please describe them.</label>
+        <label class="field-label">4. Were there any confusing aspects or areas for improvement specifically within our automated onboarding system's interface or explanations? Please describe them.</label>
         <textarea id="post-q4" style="min-height:110px" placeholder="Your answer…"></textarea>
       </div>
       </div>
       <div class="divider"></div>
       <div id="post-eff-q5">
       <div class="field-group">
-        <label class="field-label">5. Compared to standard encounters with composite visualizations (e.g., in research papers), how did the automated onboarding system alter your strategy or approach to interpreting the data?</label>
+        <label class="field-label">5. Compared to standard encounters with composite visualizations (e.g., in research papers), how did our automated onboarding system alter your strategy or approach to interpreting the data?</label>
         <textarea id="post-q5" style="min-height:110px" placeholder="Your answer…"></textarea>
       </div>
       </div>
@@ -512,11 +507,18 @@ const GROUP_MAP = {
 
 const VIZ_NAMES = { mw: 'MatrixWave', ps: 'PrettiSmart' };
 
-const TASK_QUESTIONS = [
+const MATRIXWAVE_TASK_QUESTIONS = [
   "T1. How does the zig-zag layout of the matrices help you follow a continuous path through the website?",
   "T2. Inside the matrix grid connecting two steps, what do the size of the dark square and the background color tell you about the website traffic?",
   "T3. What specific visual clue would you look for to quickly spot a web page that had a massive drop in traffic?",
   "T4. When you click to highlight a specific path, how does the chart change to show you just the traffic for that path compared to the total traffic?"
+];
+
+const PRETTISMART_TASK_QUESTIONS = [
+  "T1. How do you use the Simulation Overview to navigate into the deeper, step-by-step details of a specific smart contract simulation?",
+  "T2. In the Function Call Details view, what do the red and blue curves tell you about the movement of cryptocurrency?",
+  "T3. What specific visual color pattern in the Overview or Net Balance charts would quickly warn you that a smart contract is consistently draining users' funds?",
+  "T4. How does the dashboard change to help you isolate information when you hover your mouse over a specific function in the Function Summary?"
 ];
 
 const SUS_ITEMS = [
@@ -529,7 +531,6 @@ const SUS_ITEMS = [
   "The system gave error messages that clearly told me how to fix problems.",
   "Whenever I made a mistake using the system, I could recover easily and quickly.",
   "The information provided with this system was clear.",
-  "The system gave help information that was clearly written.",
   "It was easy to find the information I needed.",
   "The information was effective in helping me complete the tasks.",
   "The organization of information on the system screens was clear.",
@@ -540,12 +541,12 @@ const SUS_ITEMS = [
 ];
 
 const TLX_ITEMS = [
-  { label: "Mental Demand", desc: "How much mental and perceptual activity was required?" },
+  { label: "Mental Demand", desc: "How much mental and perceptual activity was required to understand the composite visualization?" },
   { label: "Physical Demand", desc: "How physically demanding were the tasks?" },
-  { label: "Temporal Demand", desc: "How rushed or pressured did you feel due to the pace?" },
-  { label: "Performance", desc: "How successful do you think you were in accomplishing the goals?" },
+  { label: "Temporal Demand", desc: "How rushed or pressured did you feel due to the pace of the tasks or the time limit provided?" },
+  { label: "Performance", desc: "How successful do you think you were in accomplishing the goals of the tasks?" },
   { label: "Effort", desc: "How hard did you have to work mentally to accomplish your performance?" },
-  { label: "Frustration", desc: "How insecure, discouraged, irritated, stressed, or annoyed did you feel?" }
+  { label: "Frustration", desc: "How insecure, discouraged, irritated, stressed, or annoyed did you feel during the tasks?" }
 ];
 
 const EFF_ITEMS = [
@@ -630,8 +631,8 @@ function buildPills(containerId, total, colorClass) {
   }
 }
 
-function updatePills(containerId, current, colorClass) {
-  for (let i = 0; i < TASK_QUESTIONS.length; i++) {
+function updatePills(containerId, current, colorClass, total) {
+  for (let i = 0; i < total; i++) {
     const p = document.getElementById(`${containerId}-pill-${i}`);
     if (!p) continue;
     p.className = 'task-pill';
@@ -641,7 +642,7 @@ function updatePills(containerId, current, colorClass) {
 }
 
 // ── Task runner (with back support) ──
-function makeTaskRunner(prefix, colorClass, savedAnswers, startQ, onAllDone, onGoBack) {
+function makeTaskRunner(prefix, colorClass, savedAnswers, startQ, onAllDone, onGoBack,questions) {
   let current = startQ || 0;
   const answers = savedAnswers.slice(); // copy saved
 
@@ -654,20 +655,20 @@ function makeTaskRunner(prefix, colorClass, savedAnswers, startQ, onAllDone, onG
   const nextBtnId = `${prefix}-q-next-btn`;
   const prevBtnId = `${prefix}-q-prev-btn`;
 
-  buildPills(pillsId, TASK_QUESTIONS.length, colorClass);
+  buildPills(pillsId, questions.length, colorClass);
 
   function loadQ() {
-    document.getElementById(qnumId).textContent = `Task ${current + 1} of ${TASK_QUESTIONS.length}`;
-    document.getElementById(qtextId).textContent = TASK_QUESTIONS[current];
+    document.getElementById(qnumId).textContent = `Task ${current + 1} of ${questions.length}`;
+    document.getElementById(qtextId).textContent = questions[current];
     // Restore saved answer if going back
     document.getElementById(qansId).value = answers[current]?.answer || '';
     document.getElementById(charId).textContent = (answers[current]?.answer || '').length + ' characters';
     document.getElementById(nextBtnId).textContent =
-      current === TASK_QUESTIONS.length - 1 ? 'Finish tasks →' : 'Next task →';
+      current === questions.length - 1 ? 'Finish tasks →' : 'Next task →';
     // Show/hide back button inside task
     const prevBtn = document.getElementById(prevBtnId);
     if (prevBtn) prevBtn.style.display = (current === 0 && !onGoBack) ? 'none' : 'inline-flex';
-    updatePills(pillsId, current, colorClass);
+    updatePills(pillsId, current, colorClass, questions.length);
     startQTimer(qtimerId);
     document.getElementById(qansId).focus();
   }
@@ -680,10 +681,10 @@ function makeTaskRunner(prefix, colorClass, savedAnswers, startQ, onAllDone, onG
     const elapsed = stopQTimer();
     answers[current] = { answer: document.getElementById(qansId).value.trim() || '(no answer)', time_s: elapsed };
     current++;
-    if (current < TASK_QUESTIONS.length) {
+    if (current < questions.length) {
       loadQ();
     } else {
-      updatePills(pillsId, current, colorClass);
+      updatePills(pillsId, current, colorClass,questions.length);
       onAllDone(answers);
     }
   };
@@ -799,7 +800,7 @@ document.addEventListener('change', e => {
 // ── LOGIN ──
 document.getElementById('login-btn').onclick = () => {
   pid   = document.getElementById('login-id').value.trim();
-  pname = document.getElementById('login-name').value.trim();
+  // pname = document.getElementById('login-name').value.trim();
   group = getRadio('cond-group');
   if (!pid || !group) { document.getElementById('login-error').classList.remove('hidden'); return; }
   document.getElementById('login-error').classList.add('hidden');
@@ -848,7 +849,8 @@ document.getElementById('mw-start-tasks-btn').onclick = () => {
       vis1TaskData = answers; vis1Saved = answers;
       setNav(2); show('screen-mw-scales');
     },
-    null
+    null,
+    groupCfg.vis1 === 'mw' ? MATRIXWAVE_TASK_QUESTIONS : PRETTISMART_TASK_QUESTIONS
   );
 };
 
@@ -867,7 +869,8 @@ document.getElementById('ps-start-tasks-btn').onclick = () => {
       vis2TaskData = answers; vis2Saved = answers;
       setNav(3); show('screen-ps-scales');
     },
-    null
+    null,
+    groupCfg.vis2 === 'ps' ? MATRIXWAVE_TASK_QUESTIONS : PRETTISMART_TASK_QUESTIONS
   );
 };
 
@@ -889,7 +892,6 @@ function collectData() {
   return {
     timestamp: new Date().toISOString(),
     participantId: pid,
-    participantName: pname,
     group,
     vis1: {
       visualization: VIZ_NAMES[cfg.vis1],
