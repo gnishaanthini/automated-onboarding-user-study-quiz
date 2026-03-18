@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Study Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F7F5F0; --surface: #FFFFFF; --border: #E4E0D8;
+    --text: #1A1814; --muted: #8A8680;
+    --accent: #2D4A3E; --accent-light: #EBF2EE;
+    --radius: 12px; --radius-sm: 8px;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+  .container { width: 100%; max-width: 640px; }
+  .header { text-align: center; margin-bottom: 2.5rem; }
+  .header h1 { font-family: 'DM Serif Display', serif; font-size: 2rem; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+  .header p { font-size: 14px; color: var(--muted); font-weight: 300; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin-bottom: 1rem; }
+  .field-label { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; display: block; }
+  input[type="text"] { width: 100%; padding: 11px 14px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); outline: none; transition: border-color 0.2s; }
+  input[type="text"]:focus { border-color: var(--accent); }
+  .field-group { margin-bottom: 1.25rem; }
+  .progress-wrap { margin-bottom: 1.5rem; }
+  .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 13px; color: var(--muted); }
+  .timer-badge { font-size: 13px; font-weight: 500; padding: 4px 12px; background: var(--accent-light); color: var(--accent); border-radius: 99px; font-variant-numeric: tabular-nums; min-width: 64px; text-align: center; }
+  .progress-bar-track { height: 3px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.4s ease; }
+  .question-num { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .question-text { font-family: 'DM Serif Display', serif; font-size: 1.2rem; font-weight: 400; line-height: 1.55; margin-bottom: 1.5rem; }
+  textarea { width: 100%; min-height: 110px; padding: 12px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.6; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); resize: vertical; outline: none; transition: border-color 0.2s; }
+  textarea:focus { border-color: var(--accent); }
+  .char-hint { font-size: 12px; color: var(--muted); margin-top: 6px; text-align: right; }
+  .btn { display: inline-block; padding: 11px 22px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; transition: background 0.15s; }
+  .btn:hover { background: var(--bg); }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: #223d31; }
+  .btn-primary:disabled { opacity: 0.5; cursor: default; }
+  .btn-full { width: 100%; text-align: center; margin-top: 1.25rem; }
+  .btn-row { display: flex; gap: 10px; margin-top: 1.25rem; }
+  .result-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  .stat-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; text-align: center; }
+  .stat-val { font-family: 'DM Serif Display', serif; font-size: 1.5rem; }
+  .stat-lbl { font-size: 11px; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 2px; }
+  .result-item { padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .result-item:last-child { border: none; }
+  .result-q-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
+  .result-q-text { font-size: 13px; font-weight: 500; line-height: 1.5; flex: 1; }
+  .time-pill { font-size: 12px; font-weight: 500; padding: 3px 10px; background: var(--accent-light); color: var(--accent); border-radius: 99px; white-space: nowrap; flex-shrink: 0; }
+  .result-answer-text { font-size: 13px; color: var(--muted); background: var(--bg); border-radius: var(--radius-sm); padding: 8px 10px; line-height: 1.55; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .save-status { font-size: 13px; text-align: center; padding: 10px 14px; border-radius: var(--radius-sm); margin-top: 1rem; }
+  .save-status.saving { background: #FEF9EC; color: #8A6A00; }
+  .save-status.saved  { background: var(--accent-light); color: var(--accent); }
+  .save-status.error  { background: #FDF0EE; color: #C0392B; }
+  .screen { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>User Study</h1>
+    <p>Answer each question in your own words. Your response time will be recorded.</p>
+  </div>
+
+  <div id="screen-intro" class="screen">
+    <div class="card">
+      <div class="section-title">Participant details</div>
+      <div class="field-group">
+        <label class="field-label" for="p-id">Participant ID</label>
+        <input type="text" id="p-id" placeholder="e.g. P01" autocomplete="off">
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="p-name">Name (optional)</label>
+        <input type="text" id="p-name" placeholder="Your name" autocomplete="off">
+      </div>
+      <button class="btn btn-primary btn-full" id="start-btn">Begin quiz →</button>
+    </div>
+  </div>
+
+  <div id="screen-quiz" class="screen hidden">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label" id="progress-label">Question 1 of 4</span>
+        <span class="timer-badge" id="timer">0.0s</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="question-num" id="q-num">Question 1</div>
+      <div class="question-text" id="q-text"></div>
+      <textarea id="answer-input" placeholder="Type your answer here…"></textarea>
+      <div class="char-hint" id="char-hint">0 characters</div>
+      <button class="btn btn-primary btn-full" id="next-btn">Next question →</button>
+    </div>
+  </div>
+
+  <div id="screen-results" class="screen hidden">
+    <div class="card">
+      <div class="section-title" id="results-participant"></div>
+      <div class="result-summary" id="result-summary"></div>
+      <div class="section-title">Your responses</div>
+      <div id="result-rows"></div>
+      <div class="btn-row">
+        <button class="btn" id="copy-btn" style="flex:1">Copy as text</button>
+        <button class="btn btn-primary" id="csv-btn" style="flex:1">Download CSV</button>
+      </div>
+      <div id="save-status" class="hidden save-status"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── STEP 1: Paste your Google Apps Script Web App URL below ──
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzp80TKPPz92Rtnjl8h_HyM4G8zO3RUWhbr_SOM15wVARtDEyWURhV8samnKtcPrwf8/exec';
+  // ─────────────────────────────────────────────────────────────
+
+  const questions = [
+    "How does the zig-zag layout of the matrices help you follow a continuous path through the website?",
+    "Interpreting visual encodings: Inside the matrix grid connecting two steps, what do the size of the dark square and the background color tell you about the website traffic?",
+    "Identifying trends or comparisons: What specific visual clue would you look for to quickly spot a web page that had a massive drop in traffic?",
+    "Understanding interactions: When you click to highlight a specific path, how does the chart change to show you just the traffic for that path compared to the total traffic?"
+  ];
+
+  let current = 0, startTime = 0, timerInterval = null;
+  const times = [], answers = [];
+  let participantId = '', participantName = '';
+
+  document.getElementById('start-btn').onclick = () => {
+    participantId = document.getElementById('p-id').value.trim() || 'Unknown';
+    participantName = document.getElementById('p-name').value.trim();
+    show('screen-quiz');
+    loadQuestion();
+  };
+
+  document.getElementById('p-id').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('start-btn').click();
+  });
+
+  function show(id) {
+    ['screen-intro','screen-quiz','screen-results'].forEach(s =>
+      document.getElementById(s).classList.toggle('hidden', s !== id)
+    );
+  }
+
+  function startTimer() {
+    startTime = Date.now();
+    timerInterval = setInterval(() => {
+      document.getElementById('timer').textContent = ((Date.now() - startTime) / 1000).toFixed(1) + 's';
+    }, 100);
+  }
+
+  function stopTimer() {
+    clearInterval(timerInterval);
+    return parseFloat(((Date.now() - startTime) / 1000).toFixed(2));
+  }
+
+  function loadQuestion() {
+    document.getElementById('progress-fill').style.width = (current / questions.length * 100) + '%';
+    document.getElementById('progress-label').textContent = `Question ${current + 1} of ${questions.length}`;
+    document.getElementById('q-num').textContent = `Question ${current + 1}`;
+    document.getElementById('q-text').textContent = questions[current];
+    document.getElementById('answer-input').value = '';
+    document.getElementById('char-hint').textContent = '0 characters';
+    document.getElementById('timer').textContent = '0.0s';
+    document.getElementById('next-btn').textContent = current === questions.length - 1 ? 'Submit →' : 'Next question →';
+    document.getElementById('answer-input').focus();
+    startTimer();
+  }
+
+  document.getElementById('answer-input').addEventListener('input', function() {
+    document.getElementById('char-hint').textContent = this.value.length + ' characters';
+  });
+
+  document.getElementById('next-btn').onclick = () => {
+    times.push(stopTimer());
+    answers.push(document.getElementById('answer-input').value.trim() || '(no answer)');
+    current++;
+    if (current < questions.length) { loadQuestion(); } else { showResults(); }
+  };
+
+  async function showResults() {
+    document.getElementById('progress-fill').style.width = '100%';
+    show('screen-results');
+
+    const total = times.reduce((a, b) => a + b, 0).toFixed(1);
+    const avg = (times.reduce((a, b) => a + b, 0) / times.length).toFixed(1);
+    const fastest = Math.min(...times).toFixed(2);
+
+    document.getElementById('results-participant').textContent =
+      participantName ? `${participantId} — ${participantName}` : `Participant: ${participantId}`;
+
+    document.getElementById('result-summary').innerHTML = `
+      <div class="stat-box"><div class="stat-val">${total}s</div><div class="stat-lbl">Total time</div></div>
+      <div class="stat-box"><div class="stat-val">${avg}s</div><div class="stat-lbl">Avg per Q</div></div>
+      <div class="stat-box"><div class="stat-val">${fastest}s</div><div class="stat-lbl">Fastest Q</div></div>`;
+
+    const rows = document.getElementById('result-rows');
+    rows.innerHTML = '';
+    questions.forEach((q, i) => {
+      const item = document.createElement('div');
+      item.className = 'result-item';
+      item.innerHTML = `
+        <div class="result-q-row">
+          <div class="result-q-text">Q${i + 1}: ${q}</div>
+          <span class="time-pill">${times[i]}s</span>
+        </div>
+        <div class="result-answer-text">${answers[i]}</div>`;
+      rows.appendChild(item);
+    });
+
+    document.getElementById('copy-btn').onclick = copyResults;
+    document.getElementById('csv-btn').onclick = downloadCSV;
+    await saveToSheet();
+  }
+
+  async function saveToSheet() {
+    const el = document.getElementById('save-status');
+    el.className = 'save-status saving';
+    el.textContent = 'Saving to Google Sheets…';
+    el.classList.remove('hidden');
+
+    if (SHEET_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+      el.className = 'save-status error';
+      el.textContent = 'Google Sheets not connected yet. See SETUP.md — or use Download CSV as backup.';
+      return;
+    }
+
+    try {
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          participantId, participantName,
+          timestamp: new Date().toISOString(),
+          responses: questions.map((q, i) => ({
+            questionNum: i + 1, question: q, time: times[i], answer: answers[i]
+          }))
+        })
+      });
+      el.className = 'save-status saved';
+      el.textContent = 'Results saved to Google Sheets.';
+    } catch (e) {
+      el.className = 'save-status error';
+      el.textContent = 'Could not reach Google Sheets. Use Download CSV as backup.';
+    }
+  }
+
+  function escapeCsv(val) {
+    const s = String(val ?? '');
+    return (s.includes(',') || s.includes('"') || s.includes('\n')) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+
+  function copyResults() {
+    const total = times.reduce((a, b) => a + b, 0).toFixed(1);
+    let txt = `User Study Results\nParticipant ID: ${participantId}\n`;
+    if (participantName) txt += `Name: ${participantName}\n`;
+    txt += `Total time: ${total}s\nDate: ${new Date().toLocaleString()}\n\n`;
+    questions.forEach((q, i) => { txt += `Q${i + 1}: ${q}\nTime: ${times[i]}s\nAnswer: ${answers[i]}\n\n`; });
+    navigator.clipboard.writeText(txt).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy as text', 2000);
+    });
+  }
+
+  function downloadCSV() {
+    const rows = [['Timestamp','Participant ID','Name','Question #','Question','Time (s)','Answer']];
+    const date = new Date().toISOString();
+    questions.forEach((q, i) => {
+      rows.push([date, escapeCsv(participantId), escapeCsv(participantName||''), i+1, escapeCsv(q), times[i], escapeCsv(answers[i])]);
+    });
+    const csv = rows.map(r => r.join(',')).join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+    a.download = `quiz_${participantId}_${Date.now()}.csv`;
+    a.click();
+  }
+</script>
+</body>
+</html>
