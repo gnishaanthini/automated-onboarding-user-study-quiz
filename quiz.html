@@ -496,7 +496,7 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
 </div><!-- /page -->
 <script>
 // ── REPLACE with your Google Apps Script Web App URL ──
-const SHEET_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzp80TKPPz92Rtnjl8h_HyM4G8zO3RUWhbr_SOM15wVARtDEyWURhV8samnKtcPrwf8/exec';
 // ─────────────────────────────────────────────────────
 
 // ─── Group → viz/condition mapping ───────────────────
@@ -702,6 +702,9 @@ function makeTaskRunner(prefix, colorClass, savedAnswers, startQ, onAllDone, onG
       }
     };
   }
+
+  // Expose current answers for back navigation
+  setTimeout(loadQ, 0);
 
   // Expose current answers for back navigation
   return { getAnswers: () => answers };
