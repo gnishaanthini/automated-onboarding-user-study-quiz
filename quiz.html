@@ -3,287 +3,990 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>User Study Quiz</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>User Study — Composite Visualizations</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg: #F7F5F0; --surface: #FFFFFF; --border: #E4E0D8;
-    --text: #1A1814; --muted: #8A8680;
-    --accent: #2D4A3E; --accent-light: #EBF2EE;
-    --radius: 12px; --radius-sm: 8px;
-  }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
-  .container { width: 100%; max-width: 640px; }
-  .header { text-align: center; margin-bottom: 2.5rem; }
-  .header h1 { font-family: 'DM Serif Display', serif; font-size: 2rem; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
-  .header p { font-size: 14px; color: var(--muted); font-weight: 300; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin-bottom: 1rem; }
-  .field-label { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; display: block; }
-  input[type="text"] { width: 100%; padding: 11px 14px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); outline: none; transition: border-color 0.2s; }
-  input[type="text"]:focus { border-color: var(--accent); }
-  .field-group { margin-bottom: 1.25rem; }
-  .progress-wrap { margin-bottom: 1.5rem; }
-  .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .progress-label { font-size: 13px; color: var(--muted); }
-  .timer-badge { font-size: 13px; font-weight: 500; padding: 4px 12px; background: var(--accent-light); color: var(--accent); border-radius: 99px; font-variant-numeric: tabular-nums; min-width: 64px; text-align: center; }
-  .progress-bar-track { height: 3px; background: var(--border); border-radius: 99px; overflow: hidden; }
-  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.4s ease; }
-  .question-num { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
-  .question-text { font-family: 'DM Serif Display', serif; font-size: 1.2rem; font-weight: 400; line-height: 1.55; margin-bottom: 1.5rem; }
-  textarea { width: 100%; min-height: 110px; padding: 12px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.6; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); resize: vertical; outline: none; transition: border-color 0.2s; }
-  textarea:focus { border-color: var(--accent); }
-  .char-hint { font-size: 12px; color: var(--muted); margin-top: 6px; text-align: right; }
-  .btn { display: inline-block; padding: 11px 22px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; transition: background 0.15s; }
-  .btn:hover { background: var(--bg); }
-  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .btn-primary:hover { background: #223d31; }
-  .btn-primary:disabled { opacity: 0.5; cursor: default; }
-  .btn-full { width: 100%; text-align: center; margin-top: 1.25rem; }
-  .btn-row { display: flex; gap: 10px; margin-top: 1.25rem; }
-  .result-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-  .stat-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; text-align: center; }
-  .stat-val { font-family: 'DM Serif Display', serif; font-size: 1.5rem; }
-  .stat-lbl { font-size: 11px; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 2px; }
-  .result-item { padding: 14px 0; border-bottom: 1px solid var(--border); }
-  .result-item:last-child { border: none; }
-  .result-q-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
-  .result-q-text { font-size: 13px; font-weight: 500; line-height: 1.5; flex: 1; }
-  .time-pill { font-size: 12px; font-weight: 500; padding: 3px 10px; background: var(--accent-light); color: var(--accent); border-radius: 99px; white-space: nowrap; flex-shrink: 0; }
-  .result-answer-text { font-size: 13px; color: var(--muted); background: var(--bg); border-radius: var(--radius-sm); padding: 8px 10px; line-height: 1.55; }
-  .section-title { font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
-  .save-status { font-size: 13px; text-align: center; padding: 10px 14px; border-radius: var(--radius-sm); margin-top: 1rem; }
-  .save-status.saving { background: #FEF9EC; color: #8A6A00; }
-  .save-status.saved  { background: var(--accent-light); color: var(--accent); }
-  .save-status.error  { background: #FDF0EE; color: #C0392B; }
-  .screen { animation: fadeIn 0.3s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-  .hidden { display: none !important; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #F6F4EF; --surface: #FFFFFF; --border: #E2DED5;
+  --text: #1C1A17; --muted: #8C8880;
+  --accent: #2E4B3F; --accent-light: #EAF1ED;
+  --accent2: #5B3A8C; --accent2-light: #F0EBF8;
+  --warn: #8C4A00; --warn-light: #FEF3E6;
+  --danger: #8C2020; --danger-light: #FDEAEA;
+  --radius: 12px; --radius-sm: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.07);
+}
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1rem 4rem; }
+.page { max-width: 700px; margin: 0 auto; }
+
+.study-header { text-align: center; margin-bottom: 3rem; }
+.study-header h1 { font-family: 'DM Serif Display', serif; font-size: 1.9rem; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+.study-header p { font-size: 14px; color: var(--muted); font-weight: 300; }
+
+.progress-nav { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 2.5rem; flex-wrap: wrap; row-gap: 8px; }
+.nav-step { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.nav-dot { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--muted); transition: all 0.3s; }
+.nav-dot.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.nav-dot.done { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+.nav-label { font-size: 11px; color: var(--muted); white-space: nowrap; }
+.nav-label.active { color: var(--accent); font-weight: 500; }
+.nav-line { width: 40px; height: 1.5px; background: var(--border); margin-bottom: 18px; flex-shrink: 0; }
+.nav-line.done { background: var(--accent); }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem 2rem; margin-bottom: 1.25rem; box-shadow: var(--shadow); }
+.card-title { font-family: 'DM Serif Display', serif; font-size: 1.15rem; font-weight: 400; margin-bottom: 0.25rem; }
+.card-sub { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.5; }
+.section-badge { display: inline-block; font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 99px; margin-bottom: 0.75rem; }
+.badge-pre  { background: var(--accent-light); color: var(--accent); }
+.badge-mw   { background: var(--accent2-light); color: var(--accent2); }
+.badge-ps   { background: var(--warn-light); color: var(--warn); }
+.badge-post { background: #EEF3FE; color: #2A4A99; }
+
+.field-group { margin-bottom: 1.4rem; }
+.field-label { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 8px; display: block; line-height: 1.5; }
+.field-sub { font-size: 12px; color: var(--muted); margin-bottom: 8px; display: block; }
+
+input[type="text"], input[type="number"], select, textarea {
+  width: 100%; padding: 10px 13px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px;
+  color: var(--text); background: var(--bg);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  outline: none; transition: border-color 0.2s;
+}
+input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus { border-color: var(--accent); }
+textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
+
+.radio-group, .check-group { display: flex; flex-direction: column; gap: 8px; }
+.radio-opt {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 13px; background: var(--bg);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  cursor: pointer; transition: border-color 0.15s, background 0.15s; font-size: 14px;
+}
+.radio-opt:hover { border-color: #bbb; }
+.radio-opt input { accent-color: var(--accent); width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
+.radio-opt.selected { border-color: var(--accent); background: var(--accent-light); }
+
+/* ── Google Forms–style Likert ── */
+.likert-block { border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 1.5rem; }
+.likert-block-header { display: grid; grid-template-columns: 1fr repeat(7, 48px); align-items: center; background: var(--bg); border-bottom: 1px solid var(--border); padding: 10px 14px; gap: 0; }
+.likert-block-header .lh-empty { }
+.likert-block-header .lh-num { text-align: center; font-size: 12px; font-weight: 500; color: var(--muted); }
+.likert-block-row { display: grid; grid-template-columns: 1fr repeat(7, 48px); align-items: center; padding: 12px 14px; gap: 0; border-bottom: 1px solid var(--border); transition: background 0.15s; cursor: pointer; }
+.likert-block-row:last-child { border-bottom: none; }
+.likert-block-row:hover { background: var(--bg); }
+.likert-block-row.selected { background: var(--accent-light); }
+.lbr-label { font-size: 13px; color: var(--text); line-height: 1.45; padding-right: 12px; }
+.lbr-cell { display: flex; justify-content: center; align-items: center; }
+.lbr-cell input[type="radio"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
+.likert-ends-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); padding: 5px 14px 8px; background: var(--bg); border-top: 1px solid var(--border); }
+
+/* Keep single-likert for pre-study section B (just 2 items) */
+.single-likert { margin-bottom: 1.4rem; }
+.single-likert .field-label { margin-bottom: 10px; }
+.likert-scale { display: flex; gap: 6px; align-items: flex-end; }
+.likert-scale label { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); cursor: pointer; min-width: 32px; }
+.likert-scale input[type="radio"] { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
+.scale-ends { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* ── Per-question task card ── */
+.task-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.task-meta { display: flex; align-items: center; gap: 10px; }
+.task-qnum { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.task-progress-pills { display: flex; gap: 5px; }
+.task-pill { width: 28px; height: 5px; border-radius: 99px; background: var(--border); transition: background 0.3s; }
+.task-pill.done { background: var(--accent); }
+.task-pill.done.ps { background: var(--warn); }
+.task-pill.active { background: var(--accent2); }
+.task-pill.active.ps { background: var(--warn); opacity: 0.5; }
+
+/* Per-question timer badge */
+.q-timer-badge {
+  font-size: 13px; font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 99px;
+  font-variant-numeric: tabular-nums;
+  min-width: 72px; text-align: center;
+  border: 1px solid;
+  transition: background 0.3s;
+}
+.q-timer-badge.purple { background: var(--accent2-light); color: var(--accent2); border-color: #c8b8e8; }
+.q-timer-badge.warm   { background: var(--warn-light); color: var(--warn); border-color: #e8c89a; }
+.q-timer-badge.ticking { animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+
+.task-question-text { font-family: 'DM Serif Display', serif; font-size: 1.15rem; font-weight: 400; line-height: 1.55; margin-bottom: 1.25rem; color: var(--text); }
+.char-hint { font-size: 12px; color: var(--muted); margin-top: 5px; text-align: right; }
+
+/* Overall session timer (small, below task card) */
+.session-timer-row { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-bottom: 1rem; font-size: 12px; color: var(--muted); }
+.session-timer-val { font-variant-numeric: tabular-nums; font-weight: 500; }
+
+.btn { display: inline-block; padding: 11px 24px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; transition: background 0.15s; }
+.btn:hover { background: var(--bg); }
+.btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn-primary:hover { background: #253d33; }
+.btn-primary:disabled { opacity: 0.5; cursor: default; }
+.btn-full { width: 100%; text-align: center; margin-top: 0.75rem; }
+.btn-row { display: flex; gap: 10px; margin-top: 1.25rem; }
+
+.save-status { font-size: 13px; text-align: center; padding: 10px 14px; border-radius: var(--radius-sm); margin-top: 1rem; }
+.save-status.saving { background: var(--warn-light); color: var(--warn); }
+.save-status.saved  { background: var(--accent-light); color: var(--accent); }
+.save-status.error  { background: var(--danger-light); color: var(--danger); }
+
+.divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+.complete-icon { font-size: 2.5rem; text-align: center; margin-bottom: 1rem; }
+.complete-title { font-family: 'DM Serif Display', serif; font-size: 1.5rem; text-align: center; margin-bottom: 0.5rem; }
+.complete-sub { font-size: 14px; color: var(--muted); text-align: center; line-height: 1.6; }
+
+.screen { animation: fadeUp 0.3s ease; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+.hidden { display: none !important; }
+
+/* Back button */
+.back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); background: none; border: none; cursor: pointer; padding: 0; margin-bottom: 1rem; transition: color 0.15s; }
+.back-btn:hover { color: var(--text); }
+.back-btn::before { content: '←'; font-size: 15px; }
+
+/* Nav label dynamic */
+.nav-label.active { color: var(--accent); font-weight: 500; }
+
+@media (max-width:520px) {
+  .card { padding: 1.25rem; }
+  .nav-line { width: 20px; }
+  .likert-scale { gap: 3px; }
+  .likert-scale label { min-width: 26px; }
+}
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="header">
-    <h1>User Study</h1>
-    <p>Answer each question in your own words. Your response time will be recorded.</p>
+<div class="page">
+
+  <div class="study-header">
+    <h1>Automating User Onboarding<br>for Composite Visualizations</h1>
+    <p>User study instrument — all responses are confidential</p>
   </div>
 
-  <div id="screen-intro" class="screen">
+  <div class="progress-nav" id="progress-nav">
+    <div class="nav-step"><div class="nav-dot active" id="dot-0">1</div><div class="nav-label active" id="lbl-0">Login</div></div>
+    <div class="nav-line" id="line-0"></div>
+    <div class="nav-step"><div class="nav-dot" id="dot-1">2</div><div class="nav-label" id="lbl-1">Pre-Study</div></div>
+    <div class="nav-line" id="line-1"></div>
+    <div class="nav-step"><div class="nav-dot" id="dot-2">3</div><div class="nav-label" id="lbl-2">Vis 1</div></div>
+    <div class="nav-line" id="line-2"></div>
+    <div class="nav-step"><div class="nav-dot" id="dot-3">4</div><div class="nav-label" id="lbl-3">Vis 2</div></div>
+    <div class="nav-line" id="line-3"></div>
+    <div class="nav-step"><div class="nav-dot" id="dot-4">5</div><div class="nav-label" id="lbl-4">Post-Study</div></div>
+  </div>
+
+  <!-- ══════════════════ LOGIN ══════════════════ -->
+  <div id="screen-login" class="screen">
     <div class="card">
-      <div class="section-title">Participant details</div>
+      <div class="card-title">Participant Login</div>
+      <div class="card-sub">Enter your assigned participant ID to begin the study.</div>
       <div class="field-group">
-        <label class="field-label" for="p-id">Participant ID</label>
-        <input type="text" id="p-id" placeholder="e.g. P01" autocomplete="off">
+        <label class="field-label" for="login-id">Participant ID</label>
+        <input type="text" id="login-id" placeholder="e.g. P01" autocomplete="off">
       </div>
       <div class="field-group">
-        <label class="field-label" for="p-name">Name (optional)</label>
-        <input type="text" id="p-name" placeholder="Your name" autocomplete="off">
+        <label class="field-label" for="login-name">Full name (optional)</label>
+        <input type="text" id="login-name" placeholder="Your name" autocomplete="off">
       </div>
-      <button class="btn btn-primary btn-full" id="start-btn">Begin quiz →</button>
-    </div>
-  </div>
-
-  <div id="screen-quiz" class="screen hidden">
-    <div class="progress-wrap">
-      <div class="progress-top">
-        <span class="progress-label" id="progress-label">Question 1 of 4</span>
-        <span class="timer-badge" id="timer">0.0s</span>
-      </div>
-      <div class="progress-bar-track">
-        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="question-num" id="q-num">Question 1</div>
-      <div class="question-text" id="q-text"></div>
-      <textarea id="answer-input" placeholder="Type your answer here…"></textarea>
-      <div class="char-hint" id="char-hint">0 characters</div>
-      <button class="btn btn-primary btn-full" id="next-btn">Next question →</button>
-    </div>
-  </div>
-
-  <div id="screen-results" class="screen hidden">
-    <div class="card">
-      <div class="section-title" id="results-participant"></div>
-      <div class="result-summary" id="result-summary"></div>
-      <div class="section-title">Your responses</div>
-      <div id="result-rows"></div>
-      <div class="btn-row">
-        <button class="btn" id="copy-btn" style="flex:1">Copy as text</button>
-        <button class="btn btn-primary" id="csv-btn" style="flex:1">Download CSV</button>
-      </div>
-      <div id="save-status" class="hidden save-status"></div>
-    </div>
-  </div>
-</div>
-
-<script>
-  // ── STEP 1: Paste your Google Apps Script Web App URL below ──
-  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzp80TKPPz92Rtnjl8h_HyM4G8zO3RUWhbr_SOM15wVARtDEyWURhV8samnKtcPrwf8/exec';
-  // ─────────────────────────────────────────────────────────────
-
-  const questions = [
-    "How does the zig-zag layout of the matrices help you follow a continuous path through the website?",
-    "Interpreting visual encodings: Inside the matrix grid connecting two steps, what do the size of the dark square and the background color tell you about the website traffic?",
-    "Identifying trends or comparisons: What specific visual clue would you look for to quickly spot a web page that had a massive drop in traffic?",
-    "Understanding interactions: When you click to highlight a specific path, how does the chart change to show you just the traffic for that path compared to the total traffic?"
-  ];
-
-  let current = 0, startTime = 0, timerInterval = null;
-  const times = [], answers = [];
-  let participantId = '', participantName = '';
-
-  document.getElementById('start-btn').onclick = () => {
-    participantId = document.getElementById('p-id').value.trim() || 'Unknown';
-    participantName = document.getElementById('p-name').value.trim();
-    show('screen-quiz');
-    loadQuestion();
-  };
-
-  document.getElementById('p-id').addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('start-btn').click();
-  });
-
-  function show(id) {
-    ['screen-intro','screen-quiz','screen-results'].forEach(s =>
-      document.getElementById(s).classList.toggle('hidden', s !== id)
-    );
-  }
-
-  function startTimer() {
-    startTime = Date.now();
-    timerInterval = setInterval(() => {
-      document.getElementById('timer').textContent = ((Date.now() - startTime) / 1000).toFixed(1) + 's';
-    }, 100);
-  }
-
-  function stopTimer() {
-    clearInterval(timerInterval);
-    return parseFloat(((Date.now() - startTime) / 1000).toFixed(2));
-  }
-
-  function loadQuestion() {
-    document.getElementById('progress-fill').style.width = (current / questions.length * 100) + '%';
-    document.getElementById('progress-label').textContent = `Question ${current + 1} of ${questions.length}`;
-    document.getElementById('q-num').textContent = `Question ${current + 1}`;
-    document.getElementById('q-text').textContent = questions[current];
-    document.getElementById('answer-input').value = '';
-    document.getElementById('char-hint').textContent = '0 characters';
-    document.getElementById('timer').textContent = '0.0s';
-    document.getElementById('next-btn').textContent = current === questions.length - 1 ? 'Submit →' : 'Next question →';
-    document.getElementById('answer-input').focus();
-    startTimer();
-  }
-
-  document.getElementById('answer-input').addEventListener('input', function() {
-    document.getElementById('char-hint').textContent = this.value.length + ' characters';
-  });
-
-  document.getElementById('next-btn').onclick = () => {
-    times.push(stopTimer());
-    answers.push(document.getElementById('answer-input').value.trim() || '(no answer)');
-    current++;
-    if (current < questions.length) { loadQuestion(); } else { showResults(); }
-  };
-
-  async function showResults() {
-    document.getElementById('progress-fill').style.width = '100%';
-    show('screen-results');
-
-    const total = times.reduce((a, b) => a + b, 0).toFixed(1);
-    const avg = (times.reduce((a, b) => a + b, 0) / times.length).toFixed(1);
-    const fastest = Math.min(...times).toFixed(2);
-
-    document.getElementById('results-participant').textContent =
-      participantName ? `${participantId} — ${participantName}` : `Participant: ${participantId}`;
-
-    document.getElementById('result-summary').innerHTML = `
-      <div class="stat-box"><div class="stat-val">${total}s</div><div class="stat-lbl">Total time</div></div>
-      <div class="stat-box"><div class="stat-val">${avg}s</div><div class="stat-lbl">Avg per Q</div></div>
-      <div class="stat-box"><div class="stat-val">${fastest}s</div><div class="stat-lbl">Fastest Q</div></div>`;
-
-    const rows = document.getElementById('result-rows');
-    rows.innerHTML = '';
-    questions.forEach((q, i) => {
-      const item = document.createElement('div');
-      item.className = 'result-item';
-      item.innerHTML = `
-        <div class="result-q-row">
-          <div class="result-q-text">Q${i + 1}: ${q}</div>
-          <span class="time-pill">${times[i]}s</span>
+      <div class="field-group">
+        <label class="field-label">Assigned group</label>
+        <div class="radio-group">
+          <label class="radio-opt">
+            <input type="radio" name="cond-group" value="G1">
+            <div><div style="font-weight:500">Group 1 <span style="font-weight:400;color:var(--muted);font-size:12px">(P1–P4)</span></div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Task 1: MatrixWave + Baseline &nbsp;·&nbsp; Task 2: PrettiSmart + Experimental</div></div>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="cond-group" value="G2">
+            <div><div style="font-weight:500">Group 2 <span style="font-weight:400;color:var(--muted);font-size:12px">(P5–P8)</span></div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Task 1: MatrixWave + Experimental &nbsp;·&nbsp; Task 2: PrettiSmart + Baseline</div></div>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="cond-group" value="G3">
+            <div><div style="font-weight:500">Group 3 <span style="font-weight:400;color:var(--muted);font-size:12px">(P9–P12)</span></div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Task 1: PrettiSmart + Baseline &nbsp;·&nbsp; Task 2: MatrixWave + Experimental</div></div>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="cond-group" value="G4">
+            <div><div style="font-weight:500">Group 4 <span style="font-weight:400;color:var(--muted);font-size:12px">(P13–P16)</span></div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Task 1: PrettiSmart + Experimental &nbsp;·&nbsp; Task 2: MatrixWave + Baseline</div></div>
+          </label>
         </div>
-        <div class="result-answer-text">${answers[i]}</div>`;
-      rows.appendChild(item);
-    });
+      </div>
+      <button class="btn btn-primary btn-full" id="login-btn">Begin study →</button>
+      <div id="login-error" class="hidden save-status error" style="margin-top:0.75rem">Please enter a Participant ID and select a group.</div>
+    </div>
+  </div>
 
-    document.getElementById('copy-btn').onclick = copyResults;
-    document.getElementById('csv-btn').onclick = downloadCSV;
-    await saveToSheet();
+  <!-- ══════════════════ PRE-STUDY ══════════════════ -->
+  <div id="screen-pre" class="screen hidden">
+    <button class="back-btn" id="pre-back-btn">Back to login</button>
+    <div class="card">
+      <div class="section-badge badge-pre">Part 1 — Pre-Study</div>
+      <div class="card-title">Section A: Demographics & Visualization Experience</div>
+      <div class="card-sub">This information helps us understand your background. All responses are anonymous.</div>
+
+      <div class="field-group">
+        <label class="field-label" for="age">Age</label>
+        <input type="number" id="age" placeholder="e.g. 24" min="10" max="99" style="max-width:120px">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Gender</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="gender" value="Male"> Male</label>
+          <label class="radio-opt"><input type="radio" name="gender" value="Female"> Female</label>
+          <label class="radio-opt"><input type="radio" name="gender" value="Prefer not to say"> Prefer not to say</label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Primary field of study or work</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="field" value="Computer Science / Engineering"> Computer Science / Engineering</label>
+          <label class="radio-opt"><input type="radio" name="field" value="Data Science / Analytics"> Data Science / Analytics</label>
+          <label class="radio-opt"><input type="radio" name="field" value="Business / Finance"> Business / Finance</label>
+          <label class="radio-opt"><input type="radio" name="field" value="Design / UI/UX"> Design / UI/UX</label>
+          <label class="radio-opt"><input type="radio" name="field" value="Social Sciences"> Social Sciences</label>
+          <label class="radio-opt"><input type="radio" name="field" value="Other"> Other: <input type="text" id="field-other" placeholder="specify" style="margin-left:8px;width:160px;display:inline-block"></label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">How often do you work with data visualizations?</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="freq" value="Daily"> Daily</label>
+          <label class="radio-opt"><input type="radio" name="freq" value="Weekly"> Weekly</label>
+          <label class="radio-opt"><input type="radio" name="freq" value="Monthly"> Monthly</label>
+          <label class="radio-opt"><input type="radio" name="freq" value="Rarely"> Rarely</label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">How familiar are you with composite visualizations?</label>
+        <div class="likert-block">
+          <div class="likert-block-header">
+            <div class="lh-empty"></div>
+            <div class="lh-num">1</div><div class="lh-num">2</div><div class="lh-num">3</div><div class="lh-num">4</div><div class="lh-num">5</div><div class="lh-num">6</div><div class="lh-num">7</div>
+          </div>
+          <div class="likert-block-row" id="lbr-familiarity">
+            <div class="lbr-label" style="font-style:italic;color:var(--muted)">Not familiar at all → Very familiar</div>
+            <div class="lbr-cell"><input type="radio" name="familiarity" value="1" onchange="highlightRow('lbr-familiarity')"></div>
+            <div class="lbr-cell"><input type="radio" name="familiarity" value="2" onchange="highlightRow('lbr-familiarity')"></div>
+            <div class="lbr-cell"><input type="radio" name="familiarity" value="3" onchange="highlightRow('lbr-familiarity')"></div>
+            <div class="lbr-cell"><input type="radio" name="familiarity" value="4" onchange="highlightRow('lbr-familiarity')"></div>
+            <div class="lbr-cell"><input type="radio" name="familiarity" value="5" onchange="highlightRow('lbr-familiarity')"></div>
+            <div class="lbr-cell"><input type="radio" name="familiarity" value="6" onchange="highlightRow('lbr-familiarity')"></div>
+            <div class="lbr-cell"><input type="radio" name="familiarity" value="7" onchange="highlightRow('lbr-familiarity')"></div>
+          </div>
+          <div class="likert-ends-row"><span>Not familiar at all</span><span>Very familiar</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-badge badge-pre">Part 1 — Pre-Study</div>
+      <div class="card-title">Section B: Baseline Perception</div>
+      <div class="card-sub">1 = Strongly Disagree &nbsp;·&nbsp; 7 = Strongly Agree</div>
+      <div class="likert-block">
+        <div class="likert-block-header">
+          <div class="lh-empty"></div>
+          <div class="lh-num">1</div><div class="lh-num">2</div><div class="lh-num">3</div><div class="lh-num">4</div><div class="lh-num">5</div><div class="lh-num">6</div><div class="lh-num">7</div>
+        </div>
+        <div class="likert-block-row" id="lbr-b1">
+          <div class="lbr-label">Composite visualizations are often difficult to understand at first glance.</div>
+          <div class="lbr-cell"><input type="radio" name="b1" value="1" onchange="highlightRow('lbr-b1')"></div>
+          <div class="lbr-cell"><input type="radio" name="b1" value="2" onchange="highlightRow('lbr-b1')"></div>
+          <div class="lbr-cell"><input type="radio" name="b1" value="3" onchange="highlightRow('lbr-b1')"></div>
+          <div class="lbr-cell"><input type="radio" name="b1" value="4" onchange="highlightRow('lbr-b1')"></div>
+          <div class="lbr-cell"><input type="radio" name="b1" value="5" onchange="highlightRow('lbr-b1')"></div>
+          <div class="lbr-cell"><input type="radio" name="b1" value="6" onchange="highlightRow('lbr-b1')"></div>
+          <div class="lbr-cell"><input type="radio" name="b1" value="7" onchange="highlightRow('lbr-b1')"></div>
+        </div>
+        <div class="likert-block-row" id="lbr-b2">
+          <div class="lbr-label">Understanding the relationship between different views in a composite visualization usually requires significant effort.</div>
+          <div class="lbr-cell"><input type="radio" name="b2" value="1" onchange="highlightRow('lbr-b2')"></div>
+          <div class="lbr-cell"><input type="radio" name="b2" value="2" onchange="highlightRow('lbr-b2')"></div>
+          <div class="lbr-cell"><input type="radio" name="b2" value="3" onchange="highlightRow('lbr-b2')"></div>
+          <div class="lbr-cell"><input type="radio" name="b2" value="4" onchange="highlightRow('lbr-b2')"></div>
+          <div class="lbr-cell"><input type="radio" name="b2" value="5" onchange="highlightRow('lbr-b2')"></div>
+          <div class="lbr-cell"><input type="radio" name="b2" value="6" onchange="highlightRow('lbr-b2')"></div>
+          <div class="lbr-cell"><input type="radio" name="b2" value="7" onchange="highlightRow('lbr-b2')"></div>
+        </div>
+        <div class="likert-ends-row"><span>Strongly disagree</span><span>Strongly agree</span></div>
+      </div>
+      <button class="btn btn-primary btn-full" id="pre-next-btn">Continue to MatrixWave tasks →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════ MATRIXWAVE TASKS (one at a time) ══════════════════ -->
+  <div id="screen-mw-tasks" class="screen hidden">
+    <button class="back-btn" id="mw-tasks-back-btn">Back to Pre-Study</button>
+    <div class="card" id="mw-intro-card">
+      <div class="section-badge badge-mw">Part 2 — MatrixWave</div>
+      <div class="card-title" id="mw-condition-title">Task Session</div>
+      <div class="card-sub" id="mw-condition-desc">You will now complete 4 analytical tasks using the MatrixWave visualization. Each question is timed individually.</div>
+      <button class="btn btn-primary btn-full" id="mw-start-tasks-btn">Start tasks →</button>
+    </div>
+
+    <div id="mw-task-runner" class="hidden">
+      <div class="session-timer-row">
+        <span>Total session time:</span>
+        <span class="session-timer-val" id="mw-session-timer">0:00</span>
+      </div>
+      <div class="card">
+        <div class="task-header">
+          <div class="task-meta">
+            <span class="task-qnum" id="mw-qnum">Task 1 of 4</span>
+            <div class="task-progress-pills" id="mw-pills"></div>
+          </div>
+          <div class="q-timer-badge purple ticking" id="mw-q-timer">0.0s</div>
+        </div>
+        <div class="task-question-text" id="mw-q-text"></div>
+        <textarea id="mw-q-answer" placeholder="Type your answer here…"></textarea>
+        <div class="char-hint" id="mw-char-hint">0 characters</div>
+        <div class="btn-row" style="margin-top:0.75rem">
+          <button class="back-btn" id="mw-q-prev-btn" style="margin-bottom:0">Previous</button>
+          <button class="btn btn-primary" style="flex:1" id="mw-q-next-btn">Next task →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ MATRIXWAVE SCALES ══════════════════ -->
+  <div id="screen-mw-scales" class="screen hidden">
+    <button class="back-btn" id="mw-scales-back-btn">Back to tasks</button>
+    <div class="card">
+      <div class="section-badge badge-mw">Section C — Usability</div>
+      <div class="card-title">System Usability Questionnaire — MatrixWave</div>
+      <div class="card-sub">1 = Strongly Disagree &nbsp;·&nbsp; 7 = Strongly Agree</div>
+      <div id="mw-sus-items"></div>
+    </div>
+    <div class="card">
+      <div class="section-badge badge-mw">Section D — Workload</div>
+      <div class="card-title">NASA-TLX Workload — MatrixWave</div>
+      <div class="card-sub">1 = Very Low &nbsp;·&nbsp; 7 = Very High</div>
+      <div id="mw-tlx-items"></div>
+    </div>
+    <div class="card" id="mw-eff-card">
+      <div class="section-badge badge-mw">Section E — Effectiveness</div>
+      <div class="card-title">Onboarding System Effectiveness — MatrixWave</div>
+      <div class="card-sub">1 = Strongly Disagree &nbsp;·&nbsp; 7 = Strongly Agree</div>
+      <div id="mw-eff-items"></div>
+    </div>
+    <button class="btn btn-primary btn-full" id="mw-scales-next-btn" style="margin-bottom:1rem">Continue to PrettiSmart →</button>
+  </div>
+
+  <!-- ══════════════════ PRETTISMART TASKS (one at a time) ══════════════════ -->
+  <div id="screen-ps-tasks" class="screen hidden">
+    <button class="back-btn" id="ps-tasks-back-btn">Back to Vis 1 scales</button>
+    <div class="card" id="ps-intro-card">
+      <div class="section-badge badge-ps">Part 3 — PrettiSmart</div>
+      <div class="card-title" id="ps-condition-title">Task Session</div>
+      <div class="card-sub" id="ps-condition-desc">You will now complete 4 analytical tasks using the PrettiSmart visualization. Each question is timed individually.</div>
+      <button class="btn btn-primary btn-full" id="ps-start-tasks-btn">Start tasks →</button>
+    </div>
+
+    <div id="ps-task-runner" class="hidden">
+      <div class="session-timer-row">
+        <span>Total session time:</span>
+        <span class="session-timer-val" id="ps-session-timer">0:00</span>
+      </div>
+      <div class="card">
+        <div class="task-header">
+          <div class="task-meta">
+            <span class="task-qnum" id="ps-qnum">Task 1 of 4</span>
+            <div class="task-progress-pills" id="ps-pills"></div>
+          </div>
+          <div class="q-timer-badge warm ticking" id="ps-q-timer">0.0s</div>
+        </div>
+        <div class="task-question-text" id="ps-q-text"></div>
+        <textarea id="ps-q-answer" placeholder="Type your answer here…"></textarea>
+        <div class="char-hint" id="ps-char-hint">0 characters</div>
+        <div class="btn-row" style="margin-top:0.75rem">
+          <button class="back-btn" id="ps-q-prev-btn" style="margin-bottom:0">Previous</button>
+          <button class="btn btn-primary" style="flex:1" id="ps-q-next-btn">Next task →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ PRETTISMART SCALES ══════════════════ -->
+  <div id="screen-ps-scales" class="screen hidden">
+    <button class="back-btn" id="ps-scales-back-btn">Back to tasks</button>
+    <div class="card">
+      <div class="section-badge badge-ps">Section C — Usability</div>
+      <div class="card-title">System Usability Questionnaire — PrettiSmart</div>
+      <div class="card-sub">1 = Strongly Disagree &nbsp;·&nbsp; 7 = Strongly Agree</div>
+      <div id="ps-sus-items"></div>
+    </div>
+    <div class="card">
+      <div class="section-badge badge-ps">Section D — Workload</div>
+      <div class="card-title">NASA-TLX Workload — PrettiSmart</div>
+      <div class="card-sub">1 = Very Low &nbsp;·&nbsp; 7 = Very High</div>
+      <div id="ps-tlx-items"></div>
+    </div>
+    <div class="card" id="ps-eff-card">
+      <div class="section-badge badge-ps">Section E — Effectiveness</div>
+      <div class="card-title">Onboarding System Effectiveness — PrettiSmart</div>
+      <div class="card-sub">1 = Strongly Disagree &nbsp;·&nbsp; 7 = Strongly Agree</div>
+      <div id="ps-eff-items"></div>
+    </div>
+    <button class="btn btn-primary btn-full" id="ps-scales-next-btn" style="margin-bottom:1rem">Continue to Post-Study →</button>
+  </div>
+
+  <!-- ══════════════════ POST-STUDY ══════════════════ -->
+  <div id="screen-post" class="screen hidden">
+    <button class="back-btn" id="post-back-btn">Back to Vis 2 scales</button>
+    <div class="card">
+      <div class="section-badge badge-post">Part 4 — Post-Study</div>
+      <div class="card-title">Open-Ended Feedback</div>
+      <div class="card-sub">Please reflect on both conditions you experienced and share your thoughts below.</div>
+
+      <div class="field-group">
+        <label class="field-label">1. Comparing the text description and the automated onboarding system, which approach was more effective in helping you understand the visualization and the relationships between its multiple views? Why?</label>
+        <textarea id="post-q1" style="min-height:110px" placeholder="Your answer…"></textarea>
+      </div>
+      <div class="divider"></div>
+      <div class="field-group">
+        <label class="field-label">2. Which approach was more cognitively demanding? Please specify what factors made it more demanding.</label>
+        <textarea id="post-q2" style="min-height:110px" placeholder="Your answer…"></textarea>
+      </div>
+      <div class="divider"></div>
+      <div id="post-eff-q3">
+      <div class="field-group">
+        <label class="field-label">3. What specific feature or aspect of the automated onboarding system did you find most helpful, and why?</label>
+        <textarea id="post-q3" style="min-height:110px" placeholder="Your answer…"></textarea>
+      </div>
+      </div>
+      <div class="divider"></div>
+      <div id="post-eff-q4">
+      <div class="field-group">
+        <label class="field-label">4. Were there any confusing aspects or areas for improvement within the automated onboarding system's interface or explanations? Please describe them.</label>
+        <textarea id="post-q4" style="min-height:110px" placeholder="Your answer…"></textarea>
+      </div>
+      </div>
+      <div class="divider"></div>
+      <div id="post-eff-q5">
+      <div class="field-group">
+        <label class="field-label">5. Compared to standard encounters with composite visualizations (e.g., in research papers), how did the automated onboarding system alter your strategy or approach to interpreting the data?</label>
+        <textarea id="post-q5" style="min-height:110px" placeholder="Your answer…"></textarea>
+      </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" id="submit-btn">Submit study →</button>
+      <div id="submit-status" class="hidden save-status"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ COMPLETE ══════════════════ -->
+  <div id="screen-done" class="screen hidden">
+    <div class="card" style="text-align:center;padding:3rem 2rem">
+      <div class="complete-icon">✓</div>
+      <div class="complete-title">Thank you!</div>
+      <p class="complete-sub">Your responses have been saved.<br>You may now close this window.</p>
+      <div style="margin-top:2rem">
+        <button class="btn" id="download-btn">Download my responses (CSV)</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+<script>
+// ── REPLACE with your Google Apps Script Web App URL ──
+const SHEET_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+// ─────────────────────────────────────────────────────
+
+// ─── Group → viz/condition mapping ───────────────────
+// Each group: [vis1, cond1, vis2, cond2]
+// vis: 'mw'=MatrixWave, 'ps'=PrettiSmart
+// cond: 'B'=Baseline, 'E'=Experimental
+const GROUP_MAP = {
+  G1: { vis1:'mw', cond1:'Baseline',     vis2:'ps', cond2:'Experimental' },
+  G2: { vis1:'mw', cond1:'Experimental', vis2:'ps', cond2:'Baseline'     },
+  G3: { vis1:'ps', cond1:'Baseline',     vis2:'mw', cond2:'Experimental' },
+  G4: { vis1:'ps', cond1:'Experimental', vis2:'mw', cond2:'Baseline'     }
+};
+
+const VIZ_NAMES = { mw: 'MatrixWave', ps: 'PrettiSmart' };
+
+const TASK_QUESTIONS = [
+  "T1. How does the zig-zag layout of the matrices help you follow a continuous path through the website?",
+  "T2. Inside the matrix grid connecting two steps, what do the size of the dark square and the background color tell you about the website traffic?",
+  "T3. What specific visual clue would you look for to quickly spot a web page that had a massive drop in traffic?",
+  "T4. When you click to highlight a specific path, how does the chart change to show you just the traffic for that path compared to the total traffic?"
+];
+
+const SUS_ITEMS = [
+  "Overall, I am satisfied with how easy it is to use this system.",
+  "It was simple to use this system.",
+  "I was able to complete the tasks and scenarios quickly using this system.",
+  "I felt comfortable using this system.",
+  "It was easy to learn to use this system.",
+  "I believe I became productive quickly using this system.",
+  "The system gave error messages that clearly told me how to fix problems.",
+  "Whenever I made a mistake using the system, I could recover easily and quickly.",
+  "The information provided with this system was clear.",
+  "The system gave help information that was clearly written.",
+  "It was easy to find the information I needed.",
+  "The information was effective in helping me complete the tasks.",
+  "The organization of information on the system screens was clear.",
+  "The interface of this system was pleasant.",
+  "I liked using the interface of this system.",
+  "This system has all the functions and capabilities I expect it to have.",
+  "Overall, I am satisfied with this system."
+];
+
+const TLX_ITEMS = [
+  { label: "Mental Demand", desc: "How much mental and perceptual activity was required?" },
+  { label: "Physical Demand", desc: "How physically demanding were the tasks?" },
+  { label: "Temporal Demand", desc: "How rushed or pressured did you feel due to the pace?" },
+  { label: "Performance", desc: "How successful do you think you were in accomplishing the goals?" },
+  { label: "Effort", desc: "How hard did you have to work mentally to accomplish your performance?" },
+  { label: "Frustration", desc: "How insecure, discouraged, irritated, stressed, or annoyed did you feel?" }
+];
+
+const EFF_ITEMS = [
+  "In narrative scrollytelling mode, the step-by-step explanations were clear and helpful.",
+  "In narrative scrollytelling mode, the highlighting of visual elements improved my understanding.",
+  "The free exploration mode allowed me to investigate insights independently."
+];
+
+// ── State ──
+let pid = '', pname = '', group = 'G1';
+let groupCfg = GROUP_MAP.G1;
+let vis1TaskData = [], vis2TaskData = [];
+let vis1SessionSecs = 0, vis2SessionSecs = 0;
+let vis1SessionTimer, vis2SessionTimer;
+let qTimerInterval = null, qStartTime = 0;
+
+// Saved task answers for back navigation (store per task so going back restores answer)
+let vis1Saved = [], vis2Saved = [];
+let vis1CurrentQ = 0, vis2CurrentQ = 0;
+
+const SCREENS = ['screen-login','screen-pre','screen-mw-tasks','screen-mw-scales',
+                 'screen-ps-tasks','screen-ps-scales','screen-post','screen-done'];
+
+function show(id) {
+  SCREENS.forEach(s => document.getElementById(s).classList.toggle('hidden', s !== id));
+  window.scrollTo(0,0);
+}
+
+function setNav(step) {
+  // Update nav dot labels dynamically based on group
+  if (groupCfg) {
+    document.getElementById('lbl-2').textContent = VIZ_NAMES[groupCfg.vis1];
+    document.getElementById('lbl-3').textContent = VIZ_NAMES[groupCfg.vis2];
+  }
+  for (let i = 0; i <= 4; i++) {
+    const dot = document.getElementById('dot-' + i);
+    const lbl = document.getElementById('lbl-' + i);
+    if (i < step)        { dot.className='nav-dot done';   lbl.className='nav-label'; }
+    else if (i === step) { dot.className='nav-dot active'; lbl.className='nav-label active'; }
+    else                 { dot.className='nav-dot';        lbl.className='nav-label'; }
+    if (i < 4) document.getElementById('line-' + i).className = 'nav-line' + (i < step ? ' done' : '');
+  }
+}
+
+function getRadio(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : '';
+}
+
+function fmtTime(sec) {
+  const m = Math.floor(sec / 60), s = sec % 60;
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+function startSessionTimer(displayId, setter) {
+  let s = 0; setter(0);
+  return setInterval(() => { s++; setter(s); document.getElementById(displayId).textContent = fmtTime(s); }, 1000);
+}
+
+function startQTimer(displayId) {
+  clearInterval(qTimerInterval);
+  qStartTime = Date.now();
+  document.getElementById(displayId).textContent = '0.0s';
+  qTimerInterval = setInterval(() => {
+    document.getElementById(displayId).textContent = ((Date.now() - qStartTime)/1000).toFixed(1) + 's';
+  }, 100);
+}
+
+function stopQTimer() {
+  clearInterval(qTimerInterval);
+  return parseFloat(((Date.now() - qStartTime)/1000).toFixed(2));
+}
+
+function buildPills(containerId, total, colorClass) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = `task-pill ${colorClass}`;
+    d.id = `${containerId}-pill-${i}`;
+    el.appendChild(d);
+  }
+}
+
+function updatePills(containerId, current, colorClass) {
+  for (let i = 0; i < TASK_QUESTIONS.length; i++) {
+    const p = document.getElementById(`${containerId}-pill-${i}`);
+    if (!p) continue;
+    p.className = 'task-pill';
+    if (i < current)        p.classList.add('done', colorClass);
+    else if (i === current) p.classList.add('active', colorClass);
+  }
+}
+
+// ── Task runner (with back support) ──
+function makeTaskRunner(prefix, colorClass, savedAnswers, startQ, onAllDone, onGoBack) {
+  let current = startQ || 0;
+  const answers = savedAnswers.slice(); // copy saved
+
+  const pillsId   = `${prefix}-pills`;
+  const qnumId    = `${prefix}-qnum`;
+  const qtextId   = `${prefix}-q-text`;
+  const qansId    = `${prefix}-q-answer`;
+  const charId    = `${prefix}-char-hint`;
+  const qtimerId  = `${prefix}-q-timer`;
+  const nextBtnId = `${prefix}-q-next-btn`;
+  const prevBtnId = `${prefix}-q-prev-btn`;
+
+  buildPills(pillsId, TASK_QUESTIONS.length, colorClass);
+
+  function loadQ() {
+    document.getElementById(qnumId).textContent = `Task ${current + 1} of ${TASK_QUESTIONS.length}`;
+    document.getElementById(qtextId).textContent = TASK_QUESTIONS[current];
+    // Restore saved answer if going back
+    document.getElementById(qansId).value = answers[current]?.answer || '';
+    document.getElementById(charId).textContent = (answers[current]?.answer || '').length + ' characters';
+    document.getElementById(nextBtnId).textContent =
+      current === TASK_QUESTIONS.length - 1 ? 'Finish tasks →' : 'Next task →';
+    // Show/hide back button inside task
+    const prevBtn = document.getElementById(prevBtnId);
+    if (prevBtn) prevBtn.style.display = (current === 0 && !onGoBack) ? 'none' : 'inline-flex';
+    updatePills(pillsId, current, colorClass);
+    startQTimer(qtimerId);
+    document.getElementById(qansId).focus();
   }
 
-  async function saveToSheet() {
-    const el = document.getElementById('save-status');
-    el.className = 'save-status saving';
-    el.textContent = 'Saving to Google Sheets…';
-    el.classList.remove('hidden');
+  document.getElementById(qansId).oninput = function() {
+    document.getElementById(charId).textContent = this.value.length + ' characters';
+  };
 
-    if (SHEET_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
-      el.className = 'save-status error';
-      el.textContent = 'Google Sheets not connected yet. See SETUP.md — or use Download CSV as backup.';
-      return;
+  document.getElementById(nextBtnId).onclick = () => {
+    const elapsed = stopQTimer();
+    answers[current] = { answer: document.getElementById(qansId).value.trim() || '(no answer)', time_s: elapsed };
+    current++;
+    if (current < TASK_QUESTIONS.length) {
+      loadQ();
+    } else {
+      updatePills(pillsId, current, colorClass);
+      onAllDone(answers);
     }
+  };
 
-    try {
-      await fetch(SHEET_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          participantId, participantName,
-          timestamp: new Date().toISOString(),
-          responses: questions.map((q, i) => ({
-            questionNum: i + 1, question: q, time: times[i], answer: answers[i]
-          }))
-        })
-      });
-      el.className = 'save-status saved';
-      el.textContent = 'Results saved to Google Sheets.';
-    } catch (e) {
-      el.className = 'save-status error';
-      el.textContent = 'Could not reach Google Sheets. Use Download CSV as backup.';
+  const prevBtn = document.getElementById(prevBtnId);
+  if (prevBtn) {
+    prevBtn.onclick = () => {
+      // Save current answer before going back
+      const elapsed = stopQTimer();
+      answers[current] = { answer: document.getElementById(qansId).value.trim() || '', time_s: elapsed };
+      if (current > 0) {
+        current--;
+        loadQ();
+      } else if (onGoBack) {
+        onGoBack(answers);
+      }
+    };
+  }
+
+  // Expose current answers for back navigation
+  return { getAnswers: () => answers };
+}
+
+// ── Likert block builder (Google Forms style) ──
+function buildLikertBlock(containerId, items, prefix) {
+  const el = document.getElementById(containerId);
+  let html = `<div class="likert-block">
+    <div class="likert-block-header">
+      <div class="lh-empty"></div>
+      ${[1,2,3,4,5,6,7].map(n=>`<div class="lh-num">${n}</div>`).join('')}
+    </div>`;
+  items.forEach((item, idx) => {
+    const text = typeof item === 'string' ? item : `<strong>${item.label}:</strong> ${item.desc}`;
+    const name = `${prefix}_${idx}`;
+    html += `<div class="likert-block-row" id="lbr-${name}">
+      <div class="lbr-label">${text}</div>
+      ${[1,2,3,4,5,6,7].map(n=>`
+        <div class="lbr-cell"><input type="radio" name="${name}" value="${n}" onchange="highlightRow('lbr-${name}')"></div>`).join('')}
+    </div>`;
+  });
+  html += `<div class="likert-ends-row"><span>Strongly disagree / Very low</span><span>Strongly agree / Very high</span></div></div>`;
+  el.innerHTML = html;
+}
+
+function highlightRow(rowId) {
+  const row = document.getElementById(rowId);
+  if (row) row.classList.add('selected');
+}
+
+// ── Apply group labels to vis screens ──
+function applyGroupLabels() {
+  groupCfg = GROUP_MAP[group];
+
+  // Vis 1 labels (always uses mw- prefix in HTML but we relabel)
+  const v1name = VIZ_NAMES[groupCfg.vis1];
+  const v2name = VIZ_NAMES[groupCfg.vis2];
+
+  document.getElementById('mw-condition-title').textContent = `${v1name} — ${groupCfg.cond1}`;
+  document.getElementById('mw-condition-desc').textContent = groupCfg.cond1 === 'Baseline'
+    ? 'You have received a composite visualization and a standard text description. Answer the tasks using the text description only.'
+    : 'You have received the composite visualization with the automated dual-mode onboarding system. Use the narrative scrollytelling and free exploration modes to answer the tasks.';
+
+  document.getElementById('ps-condition-title').textContent = `${v2name} — ${groupCfg.cond2}`;
+  document.getElementById('ps-condition-desc').textContent = groupCfg.cond2 === 'Baseline'
+    ? 'You have received a composite visualization and a standard text description. Answer the tasks using the text description only.'
+    : 'You have received the composite visualization with the automated dual-mode onboarding system. Use the narrative scrollytelling and free exploration modes to answer the tasks.';
+
+  // Update section badges with actual viz names
+  document.querySelectorAll('.badge-mw').forEach(b => b.textContent = `${v1name} (${groupCfg.cond1})`);
+  document.querySelectorAll('.badge-ps').forEach(b => b.textContent = `${v2name} (${groupCfg.cond2})`);
+
+  // Show effectiveness section only for Experimental condition
+  document.getElementById('mw-eff-card').classList.toggle('hidden', groupCfg.cond1 !== 'Experimental');
+  document.getElementById('ps-eff-card').classList.toggle('hidden', groupCfg.cond2 !== 'Experimental');
+
+  // Post-study: Q3, Q4, Q5 are only for onboarding system — hide if BOTH conditions are baseline (edge case)
+  // More specifically: Q3-Q5 are about the onboarding tool, so only show if at least one condition is Experimental
+  const hasExperimental = groupCfg.cond1 === 'Experimental' || groupCfg.cond2 === 'Experimental';
+  ['post-eff-q3','post-eff-q4','post-eff-q5'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('hidden', !hasExperimental);
+  });
+
+  // Update back button labels
+  document.getElementById('ps-tasks-back-btn').textContent = `← Back to ${v1name} scales`;
+  document.getElementById('post-back-btn').textContent = `← Back to ${v2name} scales`;
+
+  setNav(1);
+}
+
+// ── Build Likert scales ──
+buildLikertBlock('mw-sus-items', SUS_ITEMS, 'mw_sus');
+buildLikertBlock('mw-tlx-items', TLX_ITEMS, 'mw_tlx');
+buildLikertBlock('mw-eff-items', EFF_ITEMS, 'mw_eff');
+buildLikertBlock('ps-sus-items', SUS_ITEMS, 'ps_sus');
+buildLikertBlock('ps-tlx-items', TLX_ITEMS, 'ps_tlx');
+buildLikertBlock('ps-eff-items', EFF_ITEMS, 'ps_eff');
+
+// ── Radio opt highlight ──
+document.addEventListener('change', e => {
+  if (e.target.type === 'radio') {
+    const grp = e.target.closest('.radio-group');
+    if (grp) {
+      grp.querySelectorAll('.radio-opt').forEach(o => o.classList.remove('selected'));
+      e.target.closest('.radio-opt')?.classList.add('selected');
     }
   }
+});
 
-  function escapeCsv(val) {
-    const s = String(val ?? '');
-    return (s.includes(',') || s.includes('"') || s.includes('\n')) ? '"' + s.replace(/"/g, '""') + '"' : s;
+// ── LOGIN ──
+document.getElementById('login-btn').onclick = () => {
+  pid   = document.getElementById('login-id').value.trim();
+  pname = document.getElementById('login-name').value.trim();
+  group = getRadio('cond-group');
+  if (!pid || !group) { document.getElementById('login-error').classList.remove('hidden'); return; }
+  document.getElementById('login-error').classList.add('hidden');
+  applyGroupLabels();
+  show('screen-pre');
+};
+
+// ── BACK BUTTONS ──
+document.getElementById('pre-back-btn').onclick = () => { setNav(0); show('screen-login'); };
+
+document.getElementById('mw-tasks-back-btn').onclick = () => { setNav(1); show('screen-pre'); };
+
+document.getElementById('mw-scales-back-btn').onclick = () => {
+  // Reset task runner so participant can go back to last task
+  clearInterval(vis1SessionTimer);
+  document.getElementById('mw-intro-card').classList.remove('hidden');
+  document.getElementById('mw-task-runner').classList.add('hidden');
+  setNav(2); show('screen-mw-tasks');
+};
+
+document.getElementById('ps-tasks-back-btn').onclick = () => { setNav(2); show('screen-mw-scales'); };
+
+document.getElementById('ps-scales-back-btn').onclick = () => {
+  clearInterval(vis2SessionTimer);
+  document.getElementById('ps-intro-card').classList.remove('hidden');
+  document.getElementById('ps-task-runner').classList.add('hidden');
+  setNav(3); show('screen-ps-tasks');
+};
+
+document.getElementById('post-back-btn').onclick = () => { setNav(3); show('screen-ps-scales'); };
+
+// ── PRE-STUDY NEXT ──
+document.getElementById('pre-next-btn').onclick = () => {
+  setNav(2); show('screen-mw-tasks');
+};
+
+// ── VIS 1 (mw prefix) START TASKS ──
+document.getElementById('mw-start-tasks-btn').onclick = () => {
+  document.getElementById('mw-intro-card').classList.add('hidden');
+  document.getElementById('mw-task-runner').classList.remove('hidden');
+  vis1SessionTimer = startSessionTimer('mw-session-timer', v => vis1SessionSecs = v);
+
+  makeTaskRunner('mw', 'purple', vis1Saved, vis1CurrentQ,
+    (answers) => {
+      clearInterval(vis1SessionTimer);
+      vis1TaskData = answers; vis1Saved = answers;
+      setNav(2); show('screen-mw-scales');
+    },
+    null
+  );
+};
+
+// ── VIS 1 SCALES NEXT ──
+document.getElementById('mw-scales-next-btn').onclick = () => { setNav(3); show('screen-ps-tasks'); };
+
+// ── VIS 2 (ps prefix) START TASKS ──
+document.getElementById('ps-start-tasks-btn').onclick = () => {
+  document.getElementById('ps-intro-card').classList.add('hidden');
+  document.getElementById('ps-task-runner').classList.remove('hidden');
+  vis2SessionTimer = startSessionTimer('ps-session-timer', v => vis2SessionSecs = v);
+
+  makeTaskRunner('ps', 'ps', vis2Saved, vis2CurrentQ,
+    (answers) => {
+      clearInterval(vis2SessionTimer);
+      vis2TaskData = answers; vis2Saved = answers;
+      setNav(3); show('screen-ps-scales');
+    },
+    null
+  );
+};
+
+// ── VIS 2 SCALES NEXT ──
+document.getElementById('ps-scales-next-btn').onclick = () => { setNav(4); show('screen-post'); };
+
+// ── SUBMIT ──
+document.getElementById('submit-btn').onclick = async () => {
+  const el = document.getElementById('submit-status');
+  el.className = 'save-status saving';
+  el.textContent = 'Saving your responses…';
+  el.classList.remove('hidden');
+  const data = collectData();
+  await saveToSheet(data, el);
+};
+
+function collectData() {
+  const cfg = GROUP_MAP[group];
+  return {
+    timestamp: new Date().toISOString(),
+    participantId: pid,
+    participantName: pname,
+    group,
+    vis1: {
+      visualization: VIZ_NAMES[cfg.vis1],
+      condition: cfg.cond1,
+      sessionTime_s: vis1SessionSecs,
+      tasks: vis1TaskData,
+      sus: SUS_ITEMS.map((_,i) => getRadio(`mw_sus_${i}`)),
+      tlx: TLX_ITEMS.map((_,i) => getRadio(`mw_tlx_${i}`)),
+      effectiveness: cfg.cond1 === 'Experimental' ? EFF_ITEMS.map((_,i) => getRadio(`mw_eff_${i}`)) : []
+    },
+    vis2: {
+      visualization: VIZ_NAMES[cfg.vis2],
+      condition: cfg.cond2,
+      sessionTime_s: vis2SessionSecs,
+      tasks: vis2TaskData,
+      sus: SUS_ITEMS.map((_,i) => getRadio(`ps_sus_${i}`)),
+      tlx: TLX_ITEMS.map((_,i) => getRadio(`ps_tlx_${i}`)),
+      effectiveness: cfg.cond2 === 'Experimental' ? EFF_ITEMS.map((_,i) => getRadio(`ps_eff_${i}`)) : []
+    },
+    pre: {
+      age: document.getElementById('age').value,
+      gender: getRadio('gender'),
+      field: getRadio('field') === 'Other' ? (document.getElementById('field-other').value||'Other') : getRadio('field'),
+      vizFrequency: getRadio('freq'),
+      compositeFamiliarity: getRadio('familiarity'),
+      baselineB1: getRadio('b1'),
+      baselineB2: getRadio('b2')
+    },
+    post: {
+      q1: document.getElementById('post-q1').value,
+      q2: document.getElementById('post-q2').value,
+      q3: document.getElementById('post-q3').value,
+      q4: document.getElementById('post-q4').value,
+      q5: document.getElementById('post-q5').value
+    }
+  };
+}
+
+async function saveToSheet(data, statusEl) {
+  if (SHEET_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    statusEl.className = 'save-status error';
+    statusEl.textContent = 'Google Sheets not connected. Download your CSV below.';
+    finishStudy(data); return;
   }
-
-  function copyResults() {
-    const total = times.reduce((a, b) => a + b, 0).toFixed(1);
-    let txt = `User Study Results\nParticipant ID: ${participantId}\n`;
-    if (participantName) txt += `Name: ${participantName}\n`;
-    txt += `Total time: ${total}s\nDate: ${new Date().toLocaleString()}\n\n`;
-    questions.forEach((q, i) => { txt += `Q${i + 1}: ${q}\nTime: ${times[i]}s\nAnswer: ${answers[i]}\n\n`; });
-    navigator.clipboard.writeText(txt).then(() => {
-      const btn = document.getElementById('copy-btn');
-      btn.textContent = 'Copied!';
-      setTimeout(() => btn.textContent = 'Copy as text', 2000);
+  try {
+    await fetch(SHEET_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
     });
+    statusEl.className = 'save-status saved';
+    statusEl.textContent = 'Saved to Google Sheets.';
+    setTimeout(() => finishStudy(data), 800);
+  } catch(e) {
+    statusEl.className = 'save-status error';
+    statusEl.textContent = 'Could not reach Google Sheets. Use Download CSV as backup.';
+    finishStudy(data);
   }
+}
 
-  function downloadCSV() {
-    const rows = [['Timestamp','Participant ID','Name','Question #','Question','Time (s)','Answer']];
-    const date = new Date().toISOString();
-    questions.forEach((q, i) => {
-      rows.push([date, escapeCsv(participantId), escapeCsv(participantName||''), i+1, escapeCsv(q), times[i], escapeCsv(answers[i])]);
+function finishStudy(data) {
+  window._studyData = data;
+  setNav(5); show('screen-done');
+}
+
+// ── CSV DOWNLOAD ──
+document.getElementById('download-btn').onclick = () => {
+  const d = window._studyData;
+  if (!d) return;
+  const rows = [['Section','Field','Value']];
+  const add = (s,f,v) => rows.push([s, f, String(v??'').replace(/\n/g,' ')]);
+
+  add('Meta','Timestamp',d.timestamp);
+  add('Meta','Participant ID',d.participantId);
+  add('Meta','Name',d.participantName);
+  add('Meta','Group',d.group);
+  Object.entries(d.pre).forEach(([k,v]) => add('Pre-Study',k,v));
+
+  ['vis1','vis2'].forEach((vk,vi) => {
+    const vd = d[vk];
+    const label = `Vis ${vi+1} (${vd.visualization})`;
+    add(label,'Condition',vd.condition);
+    add(label,'Session Time (s)',vd.sessionTime_s);
+    (vd.tasks||[]).forEach((t,i) => {
+      add(`${label} Tasks`, `T${i+1} Answer`,t.answer);
+      add(`${label} Tasks`, `T${i+1} Time (s)`,t.time_s);
     });
-    const csv = rows.map(r => r.join(',')).join('\n');
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
-    a.download = `quiz_${participantId}_${Date.now()}.csv`;
-    a.click();
-  }
+    SUS_ITEMS.forEach((_,i) => add(`${label} SUS`, `SUS${i+1}`,vd.sus[i]));
+    TLX_ITEMS.forEach((t,i) => add(`${label} TLX`,t.label,vd.tlx[i]));
+    EFF_ITEMS.forEach((_,i) => add(`${label} Effectiveness`, `Eff${i+1}`,vd.effectiveness[i]||'N/A'));
+  });
+
+  ['q1','q2','q3','q4','q5'].forEach((q,i) => add('Post-Study', `Q${i+1}`,d.post[q]));
+
+  const csv = rows.map(r => r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = `study_${d.participantId}_${Date.now()}.csv`;
+  a.click();
+};
 </script>
 </body>
 </html>
