@@ -223,6 +223,29 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
   <div id="screen-pre" class="screen hidden">
     <button class="back-btn" id="pre-back-btn">Back to login</button>
     <div class="card">
+  <div class="section-badge badge-pre">Pre-Study</div>
+  <div class="card-title">What is a Composite Visualization?</div>
+  <div class="card-sub">A composite visualization combines multiple linked views to help users explore complex data. Here are some examples you may encounter.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem">
+    <div style="text-align:center">
+      <img src="Screenshot 2026-03-19 192504.png" alt="EgoLines" style="width:100%;border-radius:8px;border:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--muted);margin-top:5px">EgoLines</div>
+    </div>
+    <div style="text-align:center">
+      <img src="Screenshot 2025-12-09 130751.png" alt="DiffSeer" style="width:100%;border-radius:8px;border:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--muted);margin-top:5px">DiffSeer</div>
+    </div>
+    <div style="text-align:center">
+      <img src="Screenshot 2026-02-23 172410.png" alt="MatrixWave" style="width:100%;border-radius:8px;border:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--muted);margin-top:5px">MatrixWave — used in this study</div>
+    </div>
+    <div style="text-align:center">
+      <img src="Screenshot 2026-01-15 222413.png" alt="PrettiSmart" style="width:100%;border-radius:8px;border:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--muted);margin-top:5px">PrettiSmart — used in this study</div>
+    </div>
+  </div>
+</div>
+    <div class="card">
       <div class="section-badge badge-pre">Part 1 — Pre-Study</div>
       <div class="card-title">Section A: Demographics & Visualization Experience</div>
 
@@ -321,8 +344,19 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
     <div class="card" id="mw-intro-card">
       <div class="section-badge badge-mw">Part 2 — MatrixWave</div>
       <div class="card-title" id="mw-condition-title">Task Session</div>
-      <div class="card-sub" id="mw-condition-desc">You will now complete 4 analytical tasks using the MatrixWave visualization. Each question is timed individually.</div>
-      <button class="btn btn-primary btn-full" id="mw-start-tasks-btn">Start tasks →</button>
+      <div class="card-sub" id="mw-condition-desc">You will now complete 4 analytical tasks. Each question is timed individually.</div>
+
+<div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1.25rem">
+  <div style="font-size:13px;font-weight:500;margin-bottom:6px" id="mw-intro-viz-name">About this visualization</div>
+  <div style="font-size:13px;color:var(--muted);line-height:1.6" id="mw-intro-viz-desc">MatrixWave is a visualization designed to represent user navigation behavior across multiple steps on a website. 
+It uses a sequence of matrices arranged in a zig-zag layout.</div>
+  <a href="https://www.jeffjianzhao.com/webapp/MatrixWave/matrixwave.html" target="_blank" id="mw-vis-link"
+     style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;font-weight:500;color:var(--accent);text-decoration:none">
+    Open visualization ↗
+  </a>
+</div>
+<button class="btn btn-primary btn-full" id="mw-start-tasks-btn">Start tasks →</button>
+      <!-- <button class="btn btn-primary btn-full" id="mw-start-tasks-btn">Start tasks →</button> -->
     </div>
 
     <div id="mw-task-runner" class="hidden">
@@ -339,8 +373,7 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
           <div class="q-timer-badge purple ticking" id="mw-q-timer">0.0s</div>
         </div>
         <div class="task-question-text" id="mw-q-text"></div>
-        <textarea id="mw-q-answer" placeholder="Type your answer here…"></textarea>
-        <div class="char-hint" id="mw-char-hint">0 characters</div>
+        <div id="mw-q-answer" style="display:flex;flex-direction:column;gap:8px;margin-bottom:0.5rem"></div>
         <div class="btn-row" style="margin-top:0.75rem">
           <button class="back-btn" id="mw-q-prev-btn" style="margin-bottom:0">Previous</button>
           <button class="btn btn-primary" style="flex:1" id="mw-q-next-btn">Next task →</button>
@@ -379,8 +412,19 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
     <div class="card" id="ps-intro-card">
       <div class="section-badge badge-ps">Part 3 — PrettiSmart</div>
       <div class="card-title" id="ps-condition-title">Task Session</div>
-      <div class="card-sub" id="ps-condition-desc">You will now complete 4 analytical tasks using the PrettiSmart visualization. Each question is timed individually.</div>
-      <button class="btn btn-primary btn-full" id="ps-start-tasks-btn">Start tasks →</button>
+      <div class="card-sub" id="ps-condition-desc">You will now complete 4 analytical tasks. Each question is timed individually.</div>
+
+<div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1.25rem">
+  <div style="font-size:13px;font-weight:500;margin-bottom:6px" id="ps-intro-viz-name">About this visualization</div>
+  <div style="font-size:13px;color:var(--muted);line-height:1.6" id="ps-intro-viz-desc">PrettiSmart is a visualization system for analyzing the behavior of smart contracts through simulated executions. 
+It presents an overview of multiple simulations and allows users to explore detailed views of function calls, cryptocurrency flows, and state changes. </div>
+  <a href="https://prettismart.onrender.com/" target="_blank" id="ps-vis-link"
+     style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;font-weight:500;color:var(--warn);text-decoration:none">
+    Open visualization ↗
+  </a>
+</div>
+<button class="btn btn-primary btn-full" id="ps-start-tasks-btn">Start tasks →</button>
+      <!-- <button class="btn btn-primary btn-full" id="ps-start-tasks-btn">Start tasks →</button> -->
     </div>
 
     <div id="ps-task-runner" class="hidden">
@@ -397,8 +441,7 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
           <div class="q-timer-badge warm ticking" id="ps-q-timer">0.0s</div>
         </div>
         <div class="task-question-text" id="ps-q-text"></div>
-        <textarea id="ps-q-answer" placeholder="Type your answer here…"></textarea>
-        <div class="char-hint" id="ps-char-hint">0 characters</div>
+        <div id="ps-q-answer" style="display:flex;flex-direction:column;gap:8px;margin-bottom:0.5rem"></div>
         <div class="btn-row" style="margin-top:0.75rem">
           <button class="back-btn" id="ps-q-prev-btn" style="margin-bottom:0">Previous</button>
           <button class="btn btn-primary" style="flex:1" id="ps-q-next-btn">Next task →</button>
@@ -508,17 +551,81 @@ const GROUP_MAP = {
 const VIZ_NAMES = { mw: 'MatrixWave', ps: 'PrettiSmart' };
 
 const MATRIXWAVE_TASK_QUESTIONS = [
-  "T1. How does the zig-zag layout of the matrices help you follow a continuous path through the website?",
-  "T2. Inside the matrix grid connecting two steps, what do the size of the dark square and the background color tell you about the website traffic?",
-  "T3. What specific visual clue would you look for to quickly spot a web page that had a massive drop in traffic?",
-  "T4. When you click to highlight a specific path, how does the chart change to show you just the traffic for that path compared to the total traffic?"
+  {
+    q: "T1. You want to trace how users move step-by-step through the website. How does the zig-zag layout help you achieve this?",
+    options: [
+      "It reduces the number of pages shown",
+      "It allows continuous navigation paths to be visually traced across steps",
+      "It highlights only the most popular pages",
+      "It groups similar pages together"
+    ]
+  },
+  {
+    q: "T2. You are analyzing transitions between two steps. What do the size of the dark square and the background color together tell you?",
+    options: [
+      "Size shows time spent, and color shows page categories",
+      "Size shows traffic volume, and color shows differences between datasets",
+      "Size shows number of users, and color shows navigation order",
+      "Size and color both represent the same information"
+    ]
+  },
+  {
+  q: "T3. You want to quickly identify a web page that experienced a major drop in traffic compared to another dataset. Which visual cue should you look for?",
+  options: [
+    "Nodes or cells with a strong purple color",
+    "Nodes with smaller sizes in later steps",
+    "Cells with brighter blue colors",
+    "Changes in the zig-zag layout structure"
+  ]
+},
+  {
+    q: "T4. You want to analyze a specific navigation path through the website. When you select that path, how does the visualization help you focus on it?",
+    options: [
+      "It removes all other data completely",
+      "It highlights the selected path while keeping other data visible but deemphasized",
+      "It opens a new separate chart",
+      "It rearranges the layout of the matrices"
+    ]
+  }
 ];
 
 const PRETTISMART_TASK_QUESTIONS = [
-  "T1. How do you use the Simulation Overview to navigate into the deeper, step-by-step details of a specific smart contract simulation?",
-  "T2. In the Function Call Details view, what do the red and blue curves tell you about the movement of cryptocurrency?",
-  "T3. What specific visual color pattern in the Overview or Net Balance charts would quickly warn you that a smart contract is consistently draining users' funds?",
-  "T4. How does the dashboard change to help you isolate information when you hover your mouse over a specific function in the Function Summary?"
+  {
+    q: "T1. In the Simulation Overview, if an address gradually changes from red to blue over time, what does this indicate?",
+    options: [
+      "The address is becoming inactive",
+      "The address is experiencing increasing net gains",
+      "The address is making fewer function calls",
+      "The address is unchanged"
+    ]
+  },
+  {
+  q: "T2. You want to identify whether a smart contract is consistently draining users’ funds. Which visual pattern in the Overview or Net Balance charts would indicate this behavior?",
+  options: [
+    "Users' balances turn increasingly blue while the contract remains neutral",
+    "Users' balances remain constant while the contract fluctuates",
+    "Users' balances consistently turn red while the contract's balance turns increasingly blue",
+    "Both users' and contract's balances fluctuate randomly"
+  ]
+},
+  {
+    q: "T3. You want to analyze the detailed behavior of a specific simulation. What action should you take?",
+    options: [
+      "Hover over a function name",
+      "Click on the simulation in the overview",
+      "Scroll through the dashboard",
+      "Filter the dataset"
+    ]
+  },
+  {
+    q: "T4. If you want to understand how a specific function affects flows and state changes across the visualization, what should you do?",
+    options: [
+      "Scroll through the dashboard",
+      "Hover over the function in the Function Summary",
+      "Restart the simulation",
+      "Change the dataset"
+    ]
+  }
 ];
 
 const SUS_ITEMS = [
@@ -645,6 +752,7 @@ function updatePills(containerId, current, colorClass, total) {
 function makeTaskRunner(prefix, colorClass, savedAnswers, startQ, onAllDone, onGoBack,questions) {
   let current = startQ || 0;
   const answers = savedAnswers.slice(); // copy saved
+  const total = questions.length; 
 
   const pillsId   = `${prefix}-pills`;
   const qnumId    = `${prefix}-qnum`;
@@ -658,36 +766,59 @@ function makeTaskRunner(prefix, colorClass, savedAnswers, startQ, onAllDone, onG
   buildPills(pillsId, questions.length, colorClass);
 
   function loadQ() {
-    document.getElementById(qnumId).textContent = `Task ${current + 1} of ${questions.length}`;
-    document.getElementById(qtextId).textContent = questions[current];
-    // Restore saved answer if going back
-    document.getElementById(qansId).value = answers[current]?.answer || '';
-    document.getElementById(charId).textContent = (answers[current]?.answer || '').length + ' characters';
-    document.getElementById(nextBtnId).textContent =
-      current === questions.length - 1 ? 'Finish tasks →' : 'Next task →';
-    // Show/hide back button inside task
-    const prevBtn = document.getElementById(prevBtnId);
-    if (prevBtn) prevBtn.style.display = (current === 0 && !onGoBack) ? 'none' : 'inline-flex';
-    updatePills(pillsId, current, colorClass, questions.length);
-    startQTimer(qtimerId);
-    document.getElementById(qansId).focus();
+  document.getElementById(qnumId).textContent = `Task ${current + 1} of ${total}`;
+  document.getElementById(qtextId).textContent = questions[current].q;
+  document.getElementById(nextBtnId).textContent = current === total - 1 ? 'Finish tasks →' : 'Next task →';
+
+  const prevBtn = document.getElementById(prevBtnId);
+  if (prevBtn) prevBtn.style.display = current === 0 ? 'none' : 'inline-flex';
+  updatePills(pillsId, current, colorClass, total);
+
+  // Render MCQ options
+  const optContainer = document.getElementById(qansId);
+  const saved = answers[current]?.answer || '';
+  optContainer.innerHTML = questions[current].options.map((opt, i) => `
+    <label class="radio-opt" id="${qansId}-opt-${i}" style="margin-bottom:8px">
+      <input type="radio" name="${qansId}-choice" value="${opt}" ${saved === opt ? 'checked' : ''}>
+      ${opt}
+    </label>
+  `).join('');
+  if (saved) {
+    const sel = optContainer.querySelector(`input[value="${saved}"]`);
+    if (sel) sel.closest('.radio-opt')?.classList.add('selected');
   }
+  optContainer.querySelectorAll('input[type="radio"]').forEach(inp => {
+    inp.addEventListener('change', () => {
+      optContainer.querySelectorAll('.radio-opt').forEach(o => o.classList.remove('selected'));
+      inp.closest('.radio-opt')?.classList.add('selected');
+    });
+  });
 
-  document.getElementById(qansId).oninput = function() {
-    document.getElementById(charId).textContent = this.value.length + ' characters';
-  };
+  startQTimer(qtimerId);
+}
 
-  document.getElementById(nextBtnId).onclick = () => {
-    const elapsed = stopQTimer();
-    answers[current] = { answer: document.getElementById(qansId).value.trim() || '(no answer)', time_s: elapsed };
-    current++;
-    if (current < questions.length) {
-      loadQ();
-    } else {
-      updatePills(pillsId, current, colorClass,questions.length);
-      onAllDone(answers);
-    }
-  };
+// Next button — defined once, outside loadQ
+document.getElementById(nextBtnId).onclick = () => {
+  const selected = document.querySelector(`input[name="${qansId}-choice"]:checked`);
+  if (!selected) { alert('Please select an answer before continuing.'); return; }
+  const elapsed = stopQTimer();
+  answers[current] = { answer: selected.value, time_s: elapsed };
+  current++;
+  if (current < total) { loadQ(); }
+  else { updatePills(pillsId, current, colorClass, total); onAllDone(answers); }
+};
+
+  // document.getElementById(nextBtnId).onclick = () => {
+  //   const elapsed = stopQTimer();
+  //   answers[current] = { answer: document.getElementById(qansId).value.trim() || '(no answer)', time_s: elapsed };
+  //   current++;
+  //   if (current < questions.length) {
+  //     loadQ();
+  //   } else {
+  //     updatePills(pillsId, current, colorClass,questions.length);
+  //     onAllDone(answers);
+  //   }
+  // };
 
   const prevBtn = document.getElementById(prevBtnId);
   if (prevBtn) {
@@ -744,6 +875,19 @@ function applyGroupLabels() {
   // Vis 1 labels (always uses mw- prefix in HTML but we relabel)
   const v1name = VIZ_NAMES[groupCfg.vis1];
   const v2name = VIZ_NAMES[groupCfg.vis2];
+  // Update intro descriptions dynamically
+const mwDesc = 'MatrixWave is a visualization designed to represent user navigation behavior across multiple steps on a website.It uses a sequence of matrices arranged in a zig-zag layout';
+const psDesc = 'PrettiSmart is a visualization system for analyzing the behavior of smart contracts through simulated executions. It presents an overview of multiple simulations and allows users to explore detailed views of function calls, cryptocurrency flows, and state changes. ';
+const mwLink = 'https://www.jeffjianzhao.com/webapp/MatrixWave/matrixwave.html';
+const psLink = 'https://prettismart.onrender.com/';
+
+document.getElementById('mw-intro-viz-name').textContent = `About ${v1name}`;
+document.getElementById('mw-intro-viz-desc').textContent = groupCfg.vis1 === 'mw' ? mwDesc : psDesc;
+document.getElementById('mw-vis-link').href = groupCfg.vis1 === 'mw' ? mwLink : psLink;
+
+document.getElementById('ps-intro-viz-name').textContent = `About ${v2name}`;
+document.getElementById('ps-intro-viz-desc').textContent = groupCfg.vis2 === 'mw' ? mwDesc : psDesc;
+document.getElementById('ps-vis-link').href = groupCfg.vis2 === 'mw' ? mwLink : psLink;
 
   document.getElementById('mw-condition-title').textContent = `${v1name} — ${groupCfg.cond1}`;
   document.getElementById('mw-condition-desc').textContent = groupCfg.cond1 === 'Baseline'
@@ -870,7 +1014,7 @@ document.getElementById('ps-start-tasks-btn').onclick = () => {
       setNav(3); show('screen-ps-scales');
     },
     null,
-    groupCfg.vis2 === 'ps' ? MATRIXWAVE_TASK_QUESTIONS : PRETTISMART_TASK_QUESTIONS
+    groupCfg.vis2 === 'ps' ? PRETTISMART_TASK_QUESTIONS : MATRIXWAVE_TASK_QUESTIONS
   );
 };
 
