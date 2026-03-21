@@ -910,7 +910,7 @@ document.getElementById('ps-vis-link').href = groupCfg.vis2 === 'mw' ? mwLink : 
   // Post-study: Q3, Q4, Q5 are only for onboarding system — hide if BOTH conditions are baseline (edge case)
   // More specifically: Q3-Q5 are about the onboarding tool, so only show if at least one condition is Experimental
   const hasExperimental = groupCfg.cond1 === 'Experimental' || groupCfg.cond2 === 'Experimental';
-  ['post-eff-q3','post-eff-q4','post-eff-q5'].forEach(id => {
+  ['post-eff-q3','post-eff-q4'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('hidden', !hasExperimental);
   });
@@ -1068,8 +1068,7 @@ function collectData() {
       q1: document.getElementById('post-q1').value,
       q2: document.getElementById('post-q2').value,
       q3: document.getElementById('post-q3').value,
-      q4: document.getElementById('post-q4').value,
-      q5: document.getElementById('post-q5').value
+      q4: document.getElementById('post-q4').value
     }
   };
 }
